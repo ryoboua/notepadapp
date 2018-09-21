@@ -1,0 +1,15 @@
+# OS generated files #
+.DS_Store
+
+# Node Files #
+/node_modules
+npm-debug.log
+/npm-debug.log.*
+
+# environment variables #
+.env
+
+# logs #
+access.log
+
+/bin
