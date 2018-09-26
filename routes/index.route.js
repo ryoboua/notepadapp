@@ -1,11 +1,10 @@
 import express from 'express';
+import userRoutes from './user.route'
 import httpStatus from 'http-status';
+import appRoot from 'app-root-path';
 
 const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send(process.env.SECURE_MESSAGE);
-});
+router.use('/users', userRoutes)
 
 export default router;

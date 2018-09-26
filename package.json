@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "app-root-path": "^2.1.0",
+    "bcrypt": "^3.0.1",
     "compression": "^1.7.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",

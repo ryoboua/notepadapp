@@ -9,7 +9,7 @@ import httpStatus from 'http-status';
 //import expressWinston from 'express-winston';
 import expressValidation from 'express-validation';
 import helmet from 'helmet';
-import routes from '../routes/index';
+import router from '../routes/index.route.js';
 //import config from './config';
 //import APIError from '../helpers/APIError';
 import path from 'path';
@@ -26,10 +26,7 @@ app.use(cookieParser());
 //app.use(compress());
 //app.use(methodOverride());
 
-//setup logging
-const accessLogStream = fs.createWriteStream(path.join(appRoot.toString(), 'access.log'), { flags: 'a' })
-
-app.use(morgan('combined', { stream: accessLogStream }))
+app.use(morgan('tiny'))
 
 
 // secure apps by setting various HTTP headers
@@ -37,8 +34,8 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', router)
+
 
 export default app;
