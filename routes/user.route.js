@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express'
+const router = express.Router();
 
 /* GET users by id. */
 
 router.route('/:id').get((req, res ) => res.send('hello'))
-module.exports = router;
+export default router;

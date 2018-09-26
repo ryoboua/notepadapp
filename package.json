@@ -16,7 +16,6 @@
     "express": "~4.16.0",
     "express-validation": "^1.0.2",
     "helmet": "^3.13.0",
-    "http-status": "^1.2.0",
     "joi": "^13.6.0",
     "method-override": "^3.0.0",
     "mongoose": "^5.2.17",

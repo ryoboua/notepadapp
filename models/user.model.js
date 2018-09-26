@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
 const saltRounds = 10;
 
@@ -69,14 +68,14 @@ UserSchema.pre('save', function checkForDuplicateEmails(next) {
         if (err) throw err
         if(user){
             //TO DO: need to check id of the user for updates
-            return httpStatus[400]
+            return 
         } else {
             next();
         }
     })
 })
 // Compare password for login
-UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+UserSchema.methods.comparePassword = function(givenPassword, cb) {
     bcrypt.compare(givenPassword, this.password, function(err, matches) {
         if (err) return cb(err);
         cb(null, matches);

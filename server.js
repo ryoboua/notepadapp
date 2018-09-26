@@ -1,5 +1,4 @@
 import app from './config/app.js';
-import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 import User from './models/user.model';
 
@@ -13,7 +12,7 @@ mongoose.connection.on('error', () => {
 });
   
 app.listen(3000, () => {
-    console.log('Server is up! ', httpStatus.OK)
+    console.log('Server is up!')
 })
 
 const intializedDatabase = async () => {
@@ -25,7 +24,7 @@ const intializedDatabase = async () => {
         password: 'password'
     })
     testUser1.save()
-    
+
 
     // const testUser2 = new User({
     //     name: 'Reggie1',
