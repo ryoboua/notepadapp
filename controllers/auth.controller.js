@@ -61,20 +61,29 @@ function verifyJwtToken(req, res, next) {
         jwt.verify(token, config.jwtSecret, 
             (err, authData) => {
                 if(err) {
-                    console.log(err)
                     res.sendStatus(403)
                 } else {
-                    res.json({
-                        message: 'You made a get request',
-                        authData
-                    })
+                    //token verified
+                    //call next middleware
+                    delete authData.user.password
+                    req.user = authData.user
+                    next()
                 }
             })
             next()
     } else {
-        //console.log(err)
         res.sendStatus(403);
     }
 }
 
-export default { login, verifyJwtToken, issueJwtToken }
+function checkUserParams(req, res, next) {
+    //if the userId provided by the verifyJwtToken matches the userId in the params
+    // continue
+    if (req.user._id === req.params.userId) {
+        next()
+    } else {
+        res.sendStatus(403)
+    }
+}
+
+export default { login, verifyJwtToken, issueJwtToken, checkUserParams }

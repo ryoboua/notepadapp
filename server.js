@@ -1,8 +1,9 @@
+import config from './config/config'
 import app from './config/app.js';
 import mongoose from 'mongoose';
 import User from './models/user.model';
 
-const mongoURI = 'mongodb://localhost/notepadapp';
+const mongoURI = config.mongo.host;
 mongoose.connect(mongoURI, { useNewUrlParser: true });
 mongoose.connection.once('open', () => {
     console.log('Connected to Mongo DB')
@@ -16,7 +17,7 @@ app.listen(3000, () => {
 })
 
 const intializedDatabase = async () => {
-    //await User.remove({})
+    // await User.remove({})
     // const testUser1 = new User({
     //     name: 'Reggie',
     //     email: 'ryoboua@gmail.com',

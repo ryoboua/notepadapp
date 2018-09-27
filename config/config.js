@@ -6,7 +6,7 @@ const config = {
     mongooseDebug: '',
     jwtSecret: process.env.JWTSECRET,
     mongo: {
-      host: '',
+      host: process.env.MONGO_HOST,
       port: ''
     }
 }

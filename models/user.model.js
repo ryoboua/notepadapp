@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import checkIfEmailAlreadyInUse from '../helpers/user.helper'
 const saltRounds = 10;
 
 // Note Schema
@@ -28,24 +29,6 @@ const NoteSchema = new mongoose.Schema({
     },
 })
 
-const checkIfEmailAlreadyInUse = function(value, isValid) {
-    const self = this;
-    return self.constructor.findOne({ email: value })
-    .exec(function(err, user){
-        if(err){
-            throw err;
-        }
-        else if(user) {
-            if(self.id === user.id) {  // if finding and saving then it's valid even for existing email
-                return isValid(true);
-            }
-            return isValid(false);  
-        }
-        else{
-            return isValid(true);
-        }
-    })
-}
 //User Schema
 const UserSchema = new mongoose.Schema({
     name: {

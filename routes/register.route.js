@@ -12,6 +12,7 @@ const createUserResponse = (req, res) => {
         res.status(status).send(message)
     }
     if(req.user) {
+        req.user.password = undefined
         res.send(req.user)
         //TODO: redirect
     }

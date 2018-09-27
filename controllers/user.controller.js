@@ -21,4 +21,45 @@ function createUser(req, res, next) {
     })
 }
 
-export default { createUser }
+function updateUser(req, res, next) {
+    const user = req.user;
+    const { name, email ,password } = req.body
+    user.name = name
+    user.email = email
+    user.password = password
+
+    User.findById(user._id, function(err, userToUpdate){
+        if (err) {
+            req.err = {
+                message: err,
+                status: 400,
+            }
+            next()
+        } else if (userToUpdate) {
+            userToUpdate.set({
+                name: user.name,
+                email: user.email,
+                password: user.password,
+            })
+            userToUpdate.save(function(err, updatedUser) {
+                if (err) {
+                    req.err = {
+                        message: err,
+                        status: 400,
+                    }
+                    next()
+                } else {
+                    res.send(updatedUser)   
+                }
+            })
+        } else {
+            req.err = {
+                message: 'Unable to update user',
+                status: 400,
+            }
+            next()
+        }
+    })
+}
+
+export default { createUser, updateUser}

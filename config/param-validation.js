@@ -8,6 +8,14 @@ const createUser = {
         password: Joi.string().required(),
     }
 }
+//POST /userId
+const updateUser = {
+    body: {
+        name: Joi.string().required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().required(),
+    }
+}
 const login = {
     body: {
         email: Joi.string().email().required(),
@@ -15,4 +23,4 @@ const login = {
     }
 }
 
-export default { createUser, login }
+export default { createUser, login, updateUser }
