@@ -8,7 +8,7 @@ const router = express.Router();
 router.route('/')
 .get(authCtrl.verifyJwtToken,
     (req, res) => {
-        res.send(req.user)
+        res.send(req.user_id)
     })
 
 .post(validate(paramValidation.login), authCtrl.login, authCtrl.issueJwtToken)

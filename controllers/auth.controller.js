@@ -36,12 +36,13 @@ function login(req, res, next) {
 }
 
 function issueJwtToken(req, res, next) {
-    if (req.err){
+    if (req.err) {
         const { status, message } = req.err
         res.status(status).send(message)
     }
-    if(req.user) {
-        jwt.sign({ user: req.user }, config.jwtSecret, { expiresIn: '1h' },
+    if (req.user) {
+        const { _id } = req.user
+        jwt.sign({ user_id: _id }, config.jwtSecret, { expiresIn: '1h' },
          (err, token) => {
             if (err) console.log(err)
             res.json({
@@ -65,8 +66,7 @@ function verifyJwtToken(req, res, next) {
                 } else {
                     //token verified
                     //call next middleware
-                    delete authData.user.password
-                    req.user = authData.user
+                    req.user_id = authData.user_id
                     next()
                 }
             })
@@ -79,7 +79,7 @@ function verifyJwtToken(req, res, next) {
 function checkUserParams(req, res, next) {
     //if the userId provided by the verifyJwtToken matches the userId in the params
     // continue
-    if (req.user._id === req.params.userId) {
+    if (req.user_id === req.params.user_id) {
         next()
     } else {
         res.sendStatus(403)

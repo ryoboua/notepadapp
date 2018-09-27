@@ -22,26 +22,23 @@ function createUser(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-    const user = req.user;
+    const { user_id } = req;
     const { name, email ,password } = req.body
-    user.name = name
-    user.email = email
-    user.password = password
-
-    User.findById(user._id, function(err, userToUpdate){
+ 
+    User.findById(user_id, function(err, user) {
         if (err) {
             req.err = {
                 message: err,
                 status: 400,
             }
             next()
-        } else if (userToUpdate) {
-            userToUpdate.set({
-                name: user.name,
-                email: user.email,
-                password: user.password,
+        } else if (user) {
+            user.set({
+                name,
+                email,
+                password,
             })
-            userToUpdate.save(function(err, updatedUser) {
+            user.save(function(err, updatedUser) {
                 if (err) {
                     req.err = {
                         message: err,
