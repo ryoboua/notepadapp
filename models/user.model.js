@@ -28,6 +28,25 @@ const NoteSchema = new mongoose.Schema({
     },
 })
 
+const checkIfEmailAlreadyInUse = function(value, isValid) {
+    const self = this;
+    return self.constructor.findOne({ email: value })
+    .exec(function(err, user){
+        if(err){
+            throw err;
+        }
+        else if(user) {
+            if(self.id === user.id) {  // if finding and saving then it's valid even for existing email
+                return isValid(true);
+            }
+            return isValid(false);  
+        }
+        else{
+            return isValid(true);
+        }
+
+    })
+}
 //User Schema
 const UserSchema = new mongoose.Schema({
     name: {
@@ -38,6 +57,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         lowercase: true,
+        validate: {
+            isAsync: true,
+            validator: checkIfEmailAlreadyInUse,
+            message:  'The email address is already taken!'
+        },
     },
     password: {
         type: String,
@@ -62,18 +86,18 @@ UserSchema.pre('save', function hashPassword(next) {
       })
 })
 // Check for duplicate email
-UserSchema.pre('save', function checkForDuplicateEmails(next) {
-    const email = this.email
-    this.constructor.findOne({ email }).exec(function(err, user){
-        if (err) throw err
-        if(user){
-            //TO DO: need to check id of the user for updates
-            return 
-        } else {
-            next();
-        }
-    })
-})
+// UserSchema.pre('save', function checkForDuplicateEmails(next) {
+//     const email = this.email
+//     this.constructor.findOne({ email }).exec(function(err, user){
+//         if (err) throw err
+//         if(user){
+//             //TO DO: need to check id of the user for updates
+//             return { error: 'Email Already in use' }
+//         } else {
+//             next();
+//         }
+//     })
+// })
 // Compare password for login
 UserSchema.methods.comparePassword = function(givenPassword, cb) {
     bcrypt.compare(givenPassword, this.password, function(err, matches) {

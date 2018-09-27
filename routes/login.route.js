@@ -1,5 +1,8 @@
 import express from 'express'
+import validate from 'express-validation';
 import auth from '../controllers/auth.controller'
+import paramValidation from '../config/param-validation';
+
 const router = express.Router();
 
 
@@ -9,13 +12,14 @@ router.route('/')
         message: 'You made a get request'
     })
 })
-.post(auth.login, (req, res) => {
+.post(validate(paramValidation.login), auth.login, (req, res) => {
     if (req.err){
         const { status, message } = req.err
         res.status(status).send(message)
     }
     if(req.user) {
         res.send(req.user)
+        //TODO - add JWT token
     }
 })
 

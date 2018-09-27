@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import compress from 'compression';
 import methodOverride from 'method-override';
 import cors from 'cors';
-import httpStatus from 'http-status';
 //import expressWinston from 'express-winston';
 import expressValidation from 'express-validation';
 import helmet from 'helmet';
@@ -27,7 +26,6 @@ app.use(cookieParser());
 //app.use(methodOverride());
 
 app.use(morgan('tiny'))
-
 
 // secure apps by setting various HTTP headers
 app.use(helmet());

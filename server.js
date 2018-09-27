@@ -16,14 +16,13 @@ app.listen(3000, () => {
 })
 
 const intializedDatabase = async () => {
-    // await User.remove( {} )
-
-    const testUser1 = new User({
-        name: 'Reggie',
-        email: 'ryoboua@gmail.com',
-        password: 'password'
-    })
-    testUser1.save()
+    //await User.remove({})
+    // const testUser1 = new User({
+    //     name: 'Reggie',
+    //     email: 'ryoboua@gmail.com',
+    //     password: 'password'
+    // })
+    // testUser1.save()
 
 
     // const testUser2 = new User({
@@ -33,5 +32,4 @@ const intializedDatabase = async () => {
     // })
     //testUser2.save()
 }
-
 intializedDatabase()
