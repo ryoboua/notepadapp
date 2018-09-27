@@ -44,7 +44,6 @@ const checkIfEmailAlreadyInUse = function(value, isValid) {
         else{
             return isValid(true);
         }
-
     })
 }
 //User Schema
@@ -85,19 +84,6 @@ UserSchema.pre('save', function hashPassword(next) {
         next()
       })
 })
-// Check for duplicate email
-// UserSchema.pre('save', function checkForDuplicateEmails(next) {
-//     const email = this.email
-//     this.constructor.findOne({ email }).exec(function(err, user){
-//         if (err) throw err
-//         if(user){
-//             //TO DO: need to check id of the user for updates
-//             return { error: 'Email Already in use' }
-//         } else {
-//             next();
-//         }
-//     })
-// })
 // Compare password for login
 UserSchema.methods.comparePassword = function(givenPassword, cb) {
     bcrypt.compare(givenPassword, this.password, function(err, matches) {
