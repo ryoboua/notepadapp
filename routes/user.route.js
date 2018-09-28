@@ -19,4 +19,11 @@ router.route('/:user_id')
     }
 )
 
+router.route('/:user_id/notes/:note_id')
+.post(
+    //if note_id present update note, if not create one
+    authCtrl.verifyJwtToken,
+    authCtrl.checkUserParams,
+)
+
 export default router;

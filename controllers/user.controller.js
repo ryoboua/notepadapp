@@ -15,10 +15,25 @@ function createUser(req, res, next) {
             }
             next()
         } else {
+            //remove password from user payload
+            result.password = undefined
             req.user = result
             next()
         }
     })
+}
+function createUserResponse(req, res, next) {
+    if (req.err){
+        const { status, message } = req.err
+        res.status(status).send(message)
+    } else if (req.user && req.token) {
+        res.json({
+            user: req.user,
+            JWTtoken: req.token,
+        })
+    } else {
+        res.sendStatus(404)
+    }
 }
 
 function updateUser(req, res, next) {
@@ -59,4 +74,4 @@ function updateUser(req, res, next) {
     })
 }
 
-export default { createUser, updateUser}
+export default { createUser, updateUser, createUserResponse}

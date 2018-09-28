@@ -5,7 +5,7 @@ import paramValidation from '../config/param-validation';
 
 const router = express.Router();
 
-router.route('/')
+router.route('/login')
 .get(authCtrl.verifyJwtToken,
     (req, res) => {
         res.send(req.user_id)

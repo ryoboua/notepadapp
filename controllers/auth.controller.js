@@ -44,11 +44,16 @@ function issueJwtToken(req, res, next) {
         const { _id } = req.user
         jwt.sign({ user_id: _id }, config.jwtSecret, { expiresIn: '1h' },
          (err, token) => {
-            if (err) console.log(err)
-            res.json({
-                token
-            })
-            //TODO Setup so frontend can catch and save jwtToken on local storage
+            if (err){
+                req.err = {
+                    message: 'Internal Server Error',
+                    status: 500,
+                }
+            } else {
+                req.token = token
+                next()
+            }
+            
           });
     }
 }
