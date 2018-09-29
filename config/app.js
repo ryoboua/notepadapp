@@ -33,5 +33,22 @@ app.use(cors());
 
 app.use('/', router)
 
+//catch errors
+app.use((err,req, res, next) => {
+    if (err.status && err.message) {
+        //known errors
+        const { status, message } = err
+        res.status(status).json({ 
+            status,
+            message
+        })
+    } else {
+        //unkown errors
+        res.status(500).send(err)
+    }
+  });
 
-export default app;
+
+
+
+module.exports = app;

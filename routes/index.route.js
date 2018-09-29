@@ -2,7 +2,6 @@ import express from 'express'
 import userRoutes from './user.route'
 import authRoutes from './auth.route'
 import registerRoutes from './register.route'
-import postRoutes from './post.route'
 
 const router = express.Router()
 

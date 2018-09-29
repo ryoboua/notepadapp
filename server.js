@@ -12,16 +12,19 @@ mongoose.connection.on('error', () => {
     throw new Error(`unable to connect to database: ${mongoURI}`);
 });
   
-app.listen(3000, () => {
-    console.log('Server is up!')
+const server = app.listen(3030, () => {
+    console.log('Server is up! port 3000')
 })
 
+app.closeDbConnection = () => {
+    mongoose.connection.close()
+}
 const intializedDatabase = async () => {
     // await User.remove({})
     // const testUser1 = new User({
-    //     name: 'Reggie',
-    //     email: 'ryoboua@gmail.com',
-    //     password: 'password'
+    //     name: 'John',
+    //     email: 'test@gmail.com',
+    //     password: 'temp123'
     // })
     // testUser1.save()
 
@@ -34,3 +37,5 @@ const intializedDatabase = async () => {
     //testUser2.save()
 }
 intializedDatabase()
+
+module.exports = { server, app } 

@@ -9,11 +9,11 @@ function createUser(req, res, next) {
     })
     user.save(function(err, result){
         if (err) {
-            req.err = {
+            let APIError = {
                 message: err.errors.email.message,
                 status: 400,
             }
-            next()
+            next(APIError)
         } else {
             //remove password from user payload
             result.password = undefined
@@ -23,16 +23,13 @@ function createUser(req, res, next) {
     })
 }
 function createUserResponse(req, res, next) {
-    if (req.err){
-        const { status, message } = req.err
-        res.status(status).send(message)
-    } else if (req.user && req.token) {
+    if (req.user && req.token) {
         res.json({
             user: req.user,
             JWTtoken: req.token,
         })
     } else {
-        res.sendStatus(404)
+        next()
     }
 }
 
@@ -42,11 +39,11 @@ function updateUser(req, res, next) {
  
     User.findById(user_id, function(err, user) {
         if (err) {
-            req.err = {
+            let APIError = {
                 message: err,
                 status: 400,
             }
-            next()
+            next(APIError)
         } else if (user) {
             user.set({
                 name,
@@ -55,21 +52,21 @@ function updateUser(req, res, next) {
             })
             user.save(function(err, updatedUser) {
                 if (err) {
-                    req.err = {
+                    let APIError = {
                         message: err,
                         status: 400,
                     }
-                    next()
+                    next(APIError)
                 } else {
                     res.send(updatedUser)   
                 }
             })
-        } else {
-            req.err = {
-                message: 'Unable to update user',
-                status: 400,
+                } else {
+                    let APIError = {
+                        message: 'Unable to update user',
+                        status: 400,
             }
-            next()
+            next(APIError)
         }
     })
 }

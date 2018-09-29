@@ -56,7 +56,7 @@ const UserSchema = new mongoose.Schema({
     },
     notes: [ NoteSchema ]
 })
-// Hash password
+// Hash password before every same in db
 UserSchema.pre('save', function hashPassword(next) {
     const user = this;
     if (!user.isModified('password')) next()

@@ -4,56 +4,57 @@ import User from '../models/user.model'
 
 
 function login(req, res, next) {
-    //retrieve username and password from body
-    const { email, password } = req.body
-    //find document with same email address in db
-    User.findOne({ email }, function(err, user) {
-        if (err) console.log('error', err);
-        //if no user is returned, return 400 error
-        if (!user) {
-            req.err = {
-                message: 'No accounts found with that email address',
-                status: 400,
-            } 
-            next()
-        } else {
-            //if user is returned, check if password matches the one stored in the db
-            user.comparePassword(password, function(err, matches) {
-                if (err) console.log('error', err);
-                if (matches) {
-                    req.user = user
-                    next()
-                } else {
-                    req.err = {
-                        message: 'Password provided is incorrect',
-                        status: 400,
+    if ( req.body.email && req.body.password ) {
+        //retrieve username and password from body
+        const { email, password } = req.body
+        //find document with same email address in db
+        User.findOne({ email }, function(err, user) {
+            if (err) next(err);
+            //if no user is returned, return 400 error
+            if (!user) {
+                let APIError = {
+                    message: 'Authentication error',
+                    status: 400,
+                } 
+                next(APIError)
+            } else {
+                //if user is returned, check if password matches the one stored in the db
+                user.comparePassword(password, function(err, matches) {
+                    if (err) next(err);
+                    if (matches) {
+                        req.user = user
+                        next()
+                    } else {
+                        let APIError = {
+                            message: 'Authentication error',
+                            status: 400,
+                        }
+                        next(APIError)
                     }
-                    next()
-                }
-            })
-        }
-    })
+                })
+            }
+        })
+    } else {
+        next()
+    }
+    
 }
 
 function issueJwtToken(req, res, next) {
-    if (req.err) {
-        const { status, message } = req.err
-        res.status(status).send(message)
-    }
+    // if (req.err) {
+    //     const { status, message } = req.err
+    //     res.status(status).send(message)
+    // }
     if (req.user) {
         const { _id } = req.user
         jwt.sign({ user_id: _id }, config.jwtSecret, { expiresIn: '1h' },
          (err, token) => {
             if (err){
-                req.err = {
-                    message: 'Internal Server Error',
-                    status: 500,
-                }
+                next(err)
             } else {
                 req.token = token
                 next()
             }
-            
           });
     }
 }
@@ -67,6 +68,7 @@ function verifyJwtToken(req, res, next) {
         jwt.verify(token, config.jwtSecret, 
             (err, authData) => {
                 if(err) {
+                    //invalid token
                     res.sendStatus(403)
                 } else {
                     //token verified
@@ -75,8 +77,8 @@ function verifyJwtToken(req, res, next) {
                     next()
                 }
             })
-            next()
     } else {
+        // no bearerHeader provided
         res.sendStatus(403);
     }
 }
@@ -91,4 +93,4 @@ function checkUserParams(req, res, next) {
     }
 }
 
-export default { login, verifyJwtToken, issueJwtToken, checkUserParams }
+module.exports = { login, verifyJwtToken, issueJwtToken, checkUserParams }
