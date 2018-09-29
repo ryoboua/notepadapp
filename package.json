@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node start-server.js"
+    "start": "node start-server.js",
+    "test": "jest --config jtest.config.js",
+    "watch": "jest --detectOpenHandles --watch ./test/*.*.js"
   },
   "dependencies": {
     "app-root-path": "^2.1.0",
@@ -20,11 +22,16 @@
     "jsonwebtoken": "^8.3.0",
     "method-override": "^3.0.0",
     "mongoose": "^5.2.17",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "node-mocks-http": "^1.7.0"
   },
   "devDependencies": {
+    "babel-jest": "^23.6.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "chai": "*",
+    "jest": "*",
+    "supertest": "^3.3.0"
   }
 }

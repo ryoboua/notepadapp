@@ -33,6 +33,7 @@ app.use(cors());
 
 app.use('/', router)
 
+
 //catch errors
 app.use((err,req, res, next) => {
     if (err.status && err.message) {

@@ -17,6 +17,11 @@ module.exports = {
         name: 'John',
         email: 'test@gmail.com',
         password: 'temp123'
+    },
+    validRegistrationCredentials: {
+      name: 'Dave',
+      email: 'exam@gmail.com',
+      password: 'infite123'
     }
   }
 

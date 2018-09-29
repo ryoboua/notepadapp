@@ -23,4 +23,4 @@ const login = {
     }
 }
 
-export default { createUser, login, updateUser }
+module.exports = { createUser, login, updateUser }

@@ -26,7 +26,7 @@ function createUserResponse(req, res, next) {
     if (req.user && req.token) {
         res.json({
             user: req.user,
-            JWTtoken: req.token,
+            JWTToken: req.token,
         })
     } else {
         next()
@@ -71,4 +71,4 @@ function updateUser(req, res, next) {
     })
 }
 
-export default { createUser, updateUser, createUserResponse}
+module.exports = { createUser, updateUser, createUserResponse}

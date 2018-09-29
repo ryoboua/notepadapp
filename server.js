@@ -12,13 +12,12 @@ mongoose.connection.on('error', () => {
     throw new Error(`unable to connect to database: ${mongoURI}`);
 });
   
-const server = app.listen(3030, () => {
+app.listen(3000, () => {
     console.log('Server is up! port 3000')
 })
 
-app.closeDbConnection = () => {
-    mongoose.connection.close()
-}
+
+
 const intializedDatabase = async () => {
     // await User.remove({})
     // const testUser1 = new User({
@@ -38,4 +37,4 @@ const intializedDatabase = async () => {
 }
 intializedDatabase()
 
-module.exports = { server, app } 
+module.exports = app
