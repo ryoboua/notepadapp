@@ -4,32 +4,29 @@ const testUser = require('./testUser')
 const mongoose = require('mongoose')
 const config = require('../config/config')
 const User = require('../models/user.model')
-
+const testHelpers = require('./helpers')
 const mongoURI = config.mongo.host;
 const register = request('http://localhost:3000/register')
 
 beforeAll(async done => {
-    mongoose.connect(mongoURI, { useNewUrlParser: true });
-    mongoose.connection.once('open', () => {
-    })
-    mongoose.connection.on('error', () => {
-        throw new Error(`unable to connect to database: ${mongoURI}`);
-    })
+    await mongoose.connect(mongoURI, { useNewUrlParser: true })
+    mongoose.connection.on('error', () => { throw new Error(`unable to connect to database: ${mongoURI}`) })
 
-    await User.remove({})
-    const testUser1 = new User({
-        name: 'John',
-        email: 'test@gmail.com',
-        password: 'temp123'
-    })
-    testUser1.save(function(err, result){
+    const MockUser = new User(testUser.validUserCredentials)
+    MockUser.save(function(err, result){
+        if (err) throw err
         done()
     })
 })
 
+afterAll(async done => {
+    await User.remove({})
+    mongoose.disconnect(done)
+})
+
 describe('# POST /register', () => {
     it('Should return email already in use', done => {
-        register
+        return register
             .post('')
             .send(testUser.existingValidUser)
             .expect(400)
@@ -43,7 +40,7 @@ describe('# POST /register', () => {
             });
     })
     it('Sending nothing in body should return validation error', done => {
-        register
+        return register
             .post('')
             .expect(400)
             .then(res => {
@@ -57,14 +54,15 @@ describe('# POST /register', () => {
     })
 
     it('Successful registration should return should return json object with user data and JWTToken', done => {
-        register
+        return register
             .post('')
             .send(testUser.validRegistrationCredentials)
             .expect(200)
             .then(res => {
                 expect(res.body).to.have.property('user');
                 expect(res.body).to.have.property('JWTToken');
-                
+                const { user, JWTToken } = res.body
+                testHelpers.validUserDataAndJWTToken(user, testUser.validRegistrationCredentials, JWTToken)
                 done()
             })
     })

@@ -23,7 +23,7 @@ app.use(cookieParser());
 //app.use(compress());
 //app.use(methodOverride());
 
-app.use(morgan('tiny'))
+app.use(morgan('dev'))
 
 // secure apps by setting various HTTP headers
 app.use(helmet());

@@ -19,13 +19,17 @@ app.listen(3000, () => {
 
 
 const intializedDatabase = async () => {
-    // await User.remove({})
+    //await User.remove({})
     // const testUser1 = new User({
     //     name: 'John',
     //     email: 'test@gmail.com',
     //     password: 'temp123'
     // })
-    // testUser1.save()
+    // testUser1.save(function(err, result) { 
+    //     console.log(result.id)
+    //     console.log(result._id) 
+ 
+    // })
 
 
     // const testUser2 = new User({

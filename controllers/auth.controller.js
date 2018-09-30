@@ -22,6 +22,8 @@ function login(req, res, next) {
                 user.comparePassword(password, function(err, matches) {
                     if (err) next(err);
                     if (matches) {
+                        //remove password from user 
+                        user.password = undefined
                         req.user = user
                         next()
                     } else {
@@ -41,13 +43,9 @@ function login(req, res, next) {
 }
 
 function issueJwtToken(req, res, next) {
-    // if (req.err) {
-    //     const { status, message } = req.err
-    //     res.status(status).send(message)
-    // }
     if (req.user) {
-        const { _id } = req.user
-        jwt.sign({ user_id: _id }, config.jwtSecret, { expiresIn: '1h' },
+        const { _id, name } = req.user
+        jwt.sign({ user_id: _id, name }, config.jwtSecret, { expiresIn: '1h' },
          (err, token) => {
             if (err){
                 next(err)
@@ -65,6 +63,8 @@ function verifyJwtToken(req, res, next) {
     // check is bearHeader is undefined
     if(typeof bearerHeader !== 'undefined') {
         const token = bearerHeader.split(' ')[1]
+        // console.log(bearerHeader.split(' ')[0])
+        // console.log('token', token)
         jwt.verify(token, config.jwtSecret, 
             (err, authData) => {
                 if(err) {
@@ -73,6 +73,7 @@ function verifyJwtToken(req, res, next) {
                 } else {
                     //token verified
                     //call next middleware
+                    console.log('authData', authData)
                     req.user_id = authData.user_id
                     next()
                 }
@@ -86,7 +87,10 @@ function verifyJwtToken(req, res, next) {
 function checkUserParams(req, res, next) {
     //if the userId provided by the verifyJwtToken matches the userId in the params
     // continue
+    console.log('Check User Params success')
+
     if (req.user_id === req.params.user_id) {
+        console.log('Check User Params success')
         next()
     } else {
         res.sendStatus(403)

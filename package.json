@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node start-server.js",
     "test": "jest --config jtest.config.js",
-    "watch": "jest --detectOpenHandles --watch ./test/*.*.js"
+    "watch": "jest --detectOpenHandles --runInBand --watch ./test/*.*.js"
   },
   "dependencies": {
     "app-root-path": "^2.1.0",

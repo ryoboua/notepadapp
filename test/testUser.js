@@ -1,5 +1,6 @@
 module.exports = {
-    validCredentials: {
+    validUserCredentials: {
+      name: 'John',
       email: 'test@gmail.com',
       password: 'temp123'
     },
