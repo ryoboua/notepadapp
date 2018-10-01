@@ -16,13 +16,18 @@ module.exports = {
     },
     existingValidUser: {
         name: 'John',
-        email: 'test@gmail.com',
+        email: 'random@hotmail.com',
         password: 'temp123'
     },
     validRegistrationCredentials: {
       name: 'Dave',
       email: 'exam@gmail.com',
       password: 'infite123'
+    },
+    validJWTToken: {
+      user_id: '',
+      name: '',
+      token: ''
     }
   }
 

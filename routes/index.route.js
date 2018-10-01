@@ -5,6 +5,9 @@ import registerRoutes from './register.route'
 
 const router = express.Router()
 
+/** GET /health-check - Check service health */
+router.get('/health-check', (req, res) => res.send('OK'))
+
 router.use('/register', registerRoutes)
 router.use('/auth', authRoutes)
 router.use('/users', userRoutes)

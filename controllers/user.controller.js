@@ -35,7 +35,7 @@ function createUserResponse(req, res, next) {
 
 function updateUser(req, res, next) {
     const { user_id } = req;
-    const { name, email ,password } = req.body
+    const { name, email , password } = req.body
  
     User.findById(user_id, function(err, user) {
         if (err) {
@@ -58,7 +58,10 @@ function updateUser(req, res, next) {
                     }
                     next(APIError)
                 } else {
-                    res.send(updatedUser)   
+                    //remove password from user payload
+                    updatedUser.password = undefined
+                    req.user = updatedUser;
+                    next()   
                 }
             })
                 } else {

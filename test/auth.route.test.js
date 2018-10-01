@@ -36,7 +36,7 @@ describe('# POST /auth/login', () => {
         expect(res.body).to.have.property('JWTToken');
         
         const { user, JWTToken } = res.body
-        testHelpers.validUserDataAndJWTToken(user, testUser.existingValidUser, JWTToken)
+        testHelpers.validUserDataAndJWTToken(user, testUser.validUserCredentials, JWTToken)
         done()
       })
       .catch(err => {

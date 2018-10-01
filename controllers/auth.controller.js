@@ -63,8 +63,6 @@ function verifyJwtToken(req, res, next) {
     // check is bearHeader is undefined
     if(typeof bearerHeader !== 'undefined') {
         const token = bearerHeader.split(' ')[1]
-        // console.log(bearerHeader.split(' ')[0])
-        // console.log('token', token)
         jwt.verify(token, config.jwtSecret, 
             (err, authData) => {
                 if(err) {
@@ -73,7 +71,6 @@ function verifyJwtToken(req, res, next) {
                 } else {
                     //token verified
                     //call next middleware
-                    console.log('authData', authData)
                     req.user_id = authData.user_id
                     next()
                 }

@@ -28,7 +28,7 @@ describe('# POST /register', () => {
     it('Should return email already in use', done => {
         return register
             .post('')
-            .send(testUser.existingValidUser)
+            .send(testUser.validUserCredentials)
             .expect(400)
             .then(res => {
                 expect(res.body).to.have.property('message', 'The email address is already taken!')

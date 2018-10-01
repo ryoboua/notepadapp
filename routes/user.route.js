@@ -9,14 +9,14 @@ const router = express.Router();
 /* GET users by id. */
 
 router.route('/:user_id')
-.get( authCtrl.verifyJwtToken, authCtrl.checkUserParams, (req, res ) => res.send(req.user_id))
-.post(authCtrl.verifyJwtToken, validate(paramValidation.updateUser), userCtrl.updateUser,
-    (req, res) => {
-        if (req.err){
-            const { status, message } = req.err
-            res.status(status).send(message)
-        }
-    }
+.get( authCtrl.verifyJwtToken, authCtrl.checkUserParams, (req, res ) => res.json({ user_id: req.user_id }))
+.post(
+    authCtrl.verifyJwtToken,
+    authCtrl.checkUserParams, 
+    validate(paramValidation.updateUser), 
+    userCtrl.updateUser,
+    authCtrl.issueJwtToken,
+    userCtrl.createUserResponse
 )
 
 router.route('/:user_id/notes/:note_id')
