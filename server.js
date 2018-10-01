@@ -23,21 +23,15 @@ const intializedDatabase = async () => {
     // const testUser1 = new User({
     //     name: 'John',
     //     email: 'test@gmail.com',
-    //     password: 'temp123'
+    //     password: 'temp123',
+    //     notes: [
+    //         { 
+    //             title: 'Note1',
+    //             content: 'long text...',
+    //          },
+    //     ]
     // })
-    // testUser1.save(function(err, result) { 
-    //     console.log(result.id)
-    //     console.log(result._id) 
- 
-    // })
-
-
-    // const testUser2 = new User({
-    //     name: 'Reggie1',
-    //     email: 'ryoboua@gmail.com',
-    //     password: 'ttt'
-    // })
-    //testUser2.save()
+    // const user = await testUser1.save()
 }
 intializedDatabase()
 
