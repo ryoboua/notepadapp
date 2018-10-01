@@ -1,4 +1,6 @@
 import User from '../models/user.model'
+import { sendAPIError } from '../helpers/APIError'
+
 
 function createUser(req, res, next) {
     const { name, email , password } = req.body
@@ -9,11 +11,7 @@ function createUser(req, res, next) {
     })
     user.save(function(err, result){
         if (err) {
-            let APIError = {
-                message: err.errors.email.message,
-                status: 400,
-            }
-            next(APIError)
+            sendAPIError(err.errors.email.message, 400, next)
         } else {
             //remove password from user payload
             result.password = undefined
@@ -39,11 +37,7 @@ function updateUser(req, res, next) {
  
     User.findById(user_id, function(err, user) {
         if (err) {
-            let APIError = {
-                message: err,
-                status: 400,
-            }
-            next(APIError)
+            sendAPIError(err, 400, next)
         } else if (user) {
             user.set({
                 name,
@@ -52,11 +46,7 @@ function updateUser(req, res, next) {
             })
             user.save(function(err, updatedUser) {
                 if (err) {
-                    let APIError = {
-                        message: err,
-                        status: 400,
-                    }
-                    next(APIError)
+                    sendAPIError(err, 400, next)
                 } else {
                     //remove password from user payload
                     updatedUser.password = undefined
@@ -65,13 +55,78 @@ function updateUser(req, res, next) {
                 }
             })
                 } else {
-                    let APIError = {
-                        message: 'Unable to update user',
-                        status: 400,
-            }
-            next(APIError)
+                    sendAPIError('Unable to update user', 400, next)
         }
     })
 }
 
-module.exports = { createUser, updateUser, createUserResponse}
+function createNote(req, res, next) {
+    const user_id = req.user_id
+    User.findById({ _id: user_id}, function(err, user){
+        if (err) {
+            sendAPIError(err, 400, next)
+        } else if (user){
+            const { title, content, created, lastUpdated, backgroundColor } = req.body
+            user.notes.push({
+                title,
+                content,
+                created,
+                lastUpdated,
+                backgroundColor,
+            })
+
+            user.save(function(err, updatedUser) {
+                if (err) {
+                    sendAPIError(err, 400, next)
+                } else {
+                    res.json({
+                        notes: updatedUser.notes
+                    });
+                }
+            })
+        } else {
+            sendAPIError('Unable to find user', 400, next)
+        }
+    })
+}
+
+function updateNote(req, res, next) {
+    const user_id = req.user_id
+    User.findById({ _id: user_id}, function(err, user){
+        if (err) {
+            sendAPIError(err, 400, next)
+        } else if (user){
+            const updatedNote = user.notes.id(req.params.note_id)
+            const { title, content, backgroundColor } = req.body
+            updatedNote.title = title
+            updatedNote.content = content
+            updatedNote.backgroundColor = backgroundColor
+            user.notes.map ( note => {
+                if(note.id === updatedNote.id) {
+                    return updatedNote
+                } else {
+                    return note
+                }
+            } )
+            user.save(function(err, updatedUser) {
+                if (err) {
+                    sendAPIError(err, 400, next)
+                } else {
+                    res.json({
+                        notes: updatedUser.notes
+                    });
+                }
+            })
+        } else {
+            sendAPIError('Unable to find user', 400, next)
+        }
+    })
+}
+
+module.exports = { 
+    createUser, 
+    updateUser, 
+    createUserResponse,
+    createNote,
+    updateNote,
+}

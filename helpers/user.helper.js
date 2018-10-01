@@ -17,4 +17,5 @@ const checkIfEmailAlreadyInUse = function(value, isValid) {
     })
 }
 
-module.exports = checkIfEmailAlreadyInUse
+
+module.exports = { checkIfEmailAlreadyInUse }

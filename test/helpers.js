@@ -2,7 +2,7 @@ const expect = require('chai').expect
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
-function validUserDataAndJWTToken (actualUser, expectedUser, JWTToken) {
+const validUserDataAndJWTToken = (actualUser, expectedUser, JWTToken) => {
     expect(actualUser.name).to.equal(expectedUser.name)
     expect(actualUser.email).to.equal(expectedUser.email)
     expect(actualUser).to.not.have.property('password')

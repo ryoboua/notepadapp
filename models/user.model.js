@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import checkIfEmailAlreadyInUse from '../helpers/user.helper'
+import { checkIfEmailAlreadyInUse } from '../helpers/user.helper'
 const saltRounds = 10;
 
 // Note Schema
@@ -27,6 +27,16 @@ const NoteSchema = new mongoose.Schema({
         type: String,
         default: '#ffffff'
     },
+})
+
+NoteSchema.pre('save', function(next){
+    const note = this;
+    if(note.isModified()) {
+        note.lastUpdated = Date.now()
+        next()
+    } else {
+        next()
+    }
 })
 
 //User Schema

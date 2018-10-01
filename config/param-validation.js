@@ -22,5 +22,14 @@ const login = {
         password: Joi.string().required(),
     }
 }
+//POST /notes
+const createNote = {
+    body: {
+        title: Joi.string().required(),
+        content:Joi.string().required(),
+        created: Joi.string().isoDate().default(Date.now()),
+        backgroundColor: Joi.string().default('#ffffff'),
+    }
+}
 
-module.exports = { createUser, login, updateUser }
+module.exports = { createUser, login, updateUser, createNote }

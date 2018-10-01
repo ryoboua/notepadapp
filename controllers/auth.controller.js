@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import config from '../config/config'
 import User from '../models/user.model'
+import { sendAPIError } from '../helpers/APIError'
 
 
 function login(req, res, next) {
@@ -9,29 +10,21 @@ function login(req, res, next) {
         const { email, password } = req.body
         //find document with same email address in db
         User.findOne({ email }, function(err, user) {
-            if (err) next(err);
+            if (err) sendAPIError(err, 500, next)
             //if no user is returned, return 400 error
             if (!user) {
-                let APIError = {
-                    message: 'Authentication error',
-                    status: 400,
-                } 
-                next(APIError)
+                sendAPIError('Authentication error', 400, next)
             } else {
                 //if user is returned, check if password matches the one stored in the db
                 user.comparePassword(password, function(err, matches) {
-                    if (err) next(err);
+                    if (err) sendAPIError(err, 500, next)
                     if (matches) {
                         //remove password from user 
                         user.password = undefined
                         req.user = user
                         next()
                     } else {
-                        let APIError = {
-                            message: 'Authentication error',
-                            status: 400,
-                        }
-                        next(APIError)
+                        sendAPIError('Authentication error', 400, next)
                     }
                 })
             }
@@ -48,7 +41,7 @@ function issueJwtToken(req, res, next) {
         jwt.sign({ user_id: _id, name }, config.jwtSecret, { expiresIn: '1h' },
          (err, token) => {
             if (err){
-                next(err)
+                sendAPIError(err, 500, next)
             } else {
                 req.token = token
                 next()
@@ -70,9 +63,16 @@ function verifyJwtToken(req, res, next) {
                     res.sendStatus(403)
                 } else {
                     //token verified
+                    //verify that user id matches the one in params
                     //call next middleware
-                    req.user_id = authData.user_id
-                    next()
+                    //TODO - write test case that breaks this
+                    if (authData.user_id === req.params.user_id) {
+                        req.user_id = authData.user_id
+                        next()
+                    } else {
+                        res.sendStatus(403)
+                    }
+
                 }
             })
     } else {
@@ -81,17 +81,4 @@ function verifyJwtToken(req, res, next) {
     }
 }
 
-function checkUserParams(req, res, next) {
-    //if the userId provided by the verifyJwtToken matches the userId in the params
-    // continue
-    console.log('Check User Params success')
-
-    if (req.user_id === req.params.user_id) {
-        console.log('Check User Params success')
-        next()
-    } else {
-        res.sendStatus(403)
-    }
-}
-
-module.exports = { login, verifyJwtToken, issueJwtToken, checkUserParams }
+module.exports = { login, verifyJwtToken, issueJwtToken }

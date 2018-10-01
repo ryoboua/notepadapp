@@ -14,6 +14,7 @@ const batman = {
     email: 'test@yahoo.com',
     password: '123temp'
 }
+let testNoteId = ''
 
 beforeAll(async done => {
     await mongoose.connect(mongoURI, { useNewUrlParser: true });
@@ -149,5 +150,44 @@ describe('# POST /users/:user_id', () => {
                     return done()
                 })
     })
+})
 
+describe('# POST /users/:user_id/notes/:note_id', () => {
+    it('Should create note and return new array of notes', async done => {
+        return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes`)
+        .post('')
+        .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+        .send({
+            title: 'Note5000',
+            content: 'LA FLAME!!!!!!!!!'
+        })
+        .expect(200)
+        .then(res => {
+            expect(res.body).to.have.property('notes')
+            const { notes } = res.body
+            expect(notes).to.be.an('array')
+            expect(notes[0].title).to.equal('Note5000')
+            expect(notes[0]._id).to.be.an('string')
+            testNoteId = notes[0]._id
+            return done()
+        })
+    })
+    it('Should return array with updated note', async done => {
+        return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
+        .post('')
+        .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+        .send({
+            title: 'HelloWorld',
+            content: 'my first tdd app'
+        })
+        .expect(200)
+        .then( res => {
+            expect(res.body).to.have.property('notes')
+            const { notes } = res.body
+            expect(notes).to.be.an('array')
+            expect(notes[0].title).to.equal('HelloWorld')
+            expect(notes[0].content).to.equal('my first tdd app')
+            done()
+        })
+    })
 })
