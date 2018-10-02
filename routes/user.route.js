@@ -7,11 +7,11 @@ import userCtrl from '../controllers/user.controller'
 const router = express.Router();
 
 /* GET users by id. */
-
 router.route('/:user_id')
-.get( authCtrl.verifyJwtToken, (req, res ) => res.json({ user_id: req.user_id }))
+.all(authCtrl.verifyJwtToken)
+.get( 
+    (req, res ) => res.json({ user_id: req.user_id }))
 .post(
-    authCtrl.verifyJwtToken,
     validate(paramValidation.updateUser), 
     userCtrl.updateUser,
     authCtrl.issueJwtToken,
@@ -19,19 +19,24 @@ router.route('/:user_id')
 )
 
 router.route('/:user_id/notes')
+.all(authCtrl.verifyJwtToken)
 .post(
-    //if note_id present update note, if not create one
-    authCtrl.verifyJwtToken,
     validate(paramValidation.createNote),
     userCtrl.createNote
 )
 
 router.route('/:user_id/notes/:note_id')
+.all(authCtrl.verifyJwtToken)
 .post(
-    //if note_id present update note, if not create one
-    authCtrl.verifyJwtToken,
-    validate(paramValidation.createNote),
+    validate(paramValidation.updateNote),
     userCtrl.updateNote
+)
+.put(
+    validate(paramValidation.updateNote),
+    userCtrl.updateNote
+)
+.delete(
+    userCtrl.deleteNote
 )
 
 export default router;

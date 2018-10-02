@@ -28,7 +28,8 @@ const NoteSchema = new mongoose.Schema({
         default: '#ffffff'
     },
 })
-
+// everytime we update a note, we update the lastUpdated value to the current time
+// no need to send timestamp from the client
 NoteSchema.pre('save', function(next){
     const note = this;
     if(note.isModified()) {

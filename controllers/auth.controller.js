@@ -3,7 +3,6 @@ import config from '../config/config'
 import User from '../models/user.model'
 import { sendAPIError } from '../helpers/APIError'
 
-
 function login(req, res, next) {
     if ( req.body.email && req.body.password ) {
         //retrieve username and password from body
@@ -20,10 +19,13 @@ function login(req, res, next) {
                     if (err) sendAPIError(err, 500, next)
                     if (matches) {
                         //remove password from user 
+                        //add user to request object
+                        //and call next middleware
                         user.password = undefined
                         req.user = user
                         next()
                     } else {
+                        //if incorrect password send authentication error
                         sendAPIError('Authentication error', 400, next)
                     }
                 })
@@ -31,13 +33,14 @@ function login(req, res, next) {
         })
     } else {
         next()
-    }
-    
+    } 
 }
 
 function issueJwtToken(req, res, next) {
     if (req.user) {
         const { _id, name } = req.user
+        //create jwt with user if and name encoded
+        // set to expire in 1h
         jwt.sign({ user_id: _id, name }, config.jwtSecret, { expiresIn: '1h' },
          (err, token) => {
             if (err){
@@ -55,6 +58,7 @@ function verifyJwtToken(req, res, next) {
     const bearerHeader = req.headers['authorization']
     // check is bearHeader is undefined
     if(typeof bearerHeader !== 'undefined') {
+        //retrieve token from header
         const token = bearerHeader.split(' ')[1]
         jwt.verify(token, config.jwtSecret, 
             (err, authData) => {
@@ -68,7 +72,7 @@ function verifyJwtToken(req, res, next) {
                     //TODO - write test case that breaks this
                     if (authData.user_id === req.params.user_id) {
                         req.user_id = authData.user_id
-                        next()
+                        return next()
                     } else {
                         res.sendStatus(403)
                     }

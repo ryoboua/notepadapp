@@ -67,6 +67,7 @@ function createNote(req, res, next) {
             sendAPIError(err, 400, next)
         } else if (user){
             const { title, content, created, lastUpdated, backgroundColor } = req.body
+            // push note to notes array
             user.notes.push({
                 title,
                 content,
@@ -74,7 +75,7 @@ function createNote(req, res, next) {
                 lastUpdated,
                 backgroundColor,
             })
-
+            //save changes to db and send new array of notes
             user.save(function(err, updatedUser) {
                 if (err) {
                     sendAPIError(err, 400, next)
@@ -123,10 +124,38 @@ function updateNote(req, res, next) {
     })
 }
 
+function deleteNote(req, res ,next) {
+    const user_id = req.user_id
+    User.findById({ _id: user_id}, function(err, user){
+        if (err) {
+            sendAPIError(err, 400, next)
+        } else if (user){
+            const noteToDelete = user.notes.id(req.params.note_id)
+            if (noteToDelete){
+                //remove note from notes array
+                user.notes.filter( note => note.id !== noteToDelete.id )
+                user.save(function(err, updatedUser) {
+                    if (err) {
+                        sendAPIError(err, 400, next)
+                    } else {
+                        res.json({
+                            notes: updatedUser.notes
+                        });
+                    }
+                })
+            } else {
+                sendAPIError('Unable to find the note you request to delete', 400, next)
+            }
+        } else {
+            sendAPIError('Unable to find user', 400, next)
+        }
+    })
+}
 module.exports = { 
     createUser, 
     updateUser, 
     createUserResponse,
     createNote,
     updateNote,
+    deleteNote,
 }

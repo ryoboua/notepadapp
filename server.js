@@ -16,8 +16,6 @@ app.listen(3000, () => {
     console.log('Server is up! port 3000')
 })
 
-
-
 const intializedDatabase = async () => {
     //await User.remove({})
     // const testUser1 = new User({

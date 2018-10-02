@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const config = require('../config/config')
 const User = require('../models/user.model')
 
+//Global test variables
 const mongoURI = config.mongo.host;
 const testUser = {
     name: 'John',

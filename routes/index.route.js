@@ -10,6 +10,8 @@ router.get('/health-check', (req, res) => res.send('OK'))
 
 router.use('/register', registerRoutes)
 router.use('/auth', authRoutes)
+
+//Protected route
 router.use('/users', userRoutes)
 
 export default router;

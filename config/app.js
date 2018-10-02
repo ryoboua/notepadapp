@@ -5,13 +5,10 @@ import cookieParser from 'cookie-parser';
 import compress from 'compression';
 import methodOverride from 'method-override';
 import cors from 'cors';
-import expressValidation from 'express-validation';
 import helmet from 'helmet';
 import router from '../routes/index.route.js';
 //import config from './config';
-import path from 'path';
-import appRoot from 'app-root-path';
-import fs from 'fs';
+
 
 const app = express();
 
@@ -32,7 +29,6 @@ app.use(helmet());
 app.use(cors());
 
 app.use('/', router)
-
 
 //catch errors
 app.use((err,req, res, next) => {

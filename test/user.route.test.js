@@ -6,7 +6,7 @@ const config = require('../config/config')
 const User = require('../models/user.model')
 const testHelpers = require('./helpers')
 
-
+//Global test variables
 const mongoURI = config.mongo.host;
 let loggedInUser = {}
 const batman = {
@@ -97,19 +97,6 @@ describe('# POST /users/:user_id', () => {
                 return done()
             })
     })
-
-    // it('Posting with valid JWT & invalid user_id - should return - 400 ', done => {
-    //     return request(`http://localhost:3000/users/${testUser.validJWTToken.user_id}`)
-    //             .post('')
-    //             .set('authorization', `Bearer ${testUser.validJWTToken.token}`)
-    //             .send(batman)
-    //             .expect(400)
-    //             .then(res => {
-    //                 expect(res.body).to.have.property('status', 400)
-    //                 expect(res.body).to.have.property('message', 'Unable to update user')
-    //                 return done()
-    //             })
-    //     })
     
     it('Posting with valid JWT & valid user_id but with nothing in body - should return - 400', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
@@ -153,7 +140,7 @@ describe('# POST /users/:user_id', () => {
 })
 
 describe('# POST /users/:user_id/notes/:note_id', () => {
-    it('Should create note and return new array of notes', async done => {
+    it('Should create note and return new array of notes', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes`)
         .post('')
         .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
@@ -172,21 +159,54 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
             return done()
         })
     })
-    it('Should return array with updated note', async done => {
+    it('POST - Should return array with updated note', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
         .post('')
         .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
         .send({
-            title: 'HelloWorld',
-            content: 'my first tdd app'
+            title: 'HelloWorld - POST',
+            content: 'my first tdd app - POST'
         })
         .expect(200)
         .then( res => {
             expect(res.body).to.have.property('notes')
             const { notes } = res.body
             expect(notes).to.be.an('array')
-            expect(notes[0].title).to.equal('HelloWorld')
-            expect(notes[0].content).to.equal('my first tdd app')
+            expect(notes[0].title).to.equal('HelloWorld - POST')
+            expect(notes[0].content).to.equal('my first tdd app - POST')
+            done()
+        })
+    })
+
+    it('PUT - Should return array with updated note', done => {
+        return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
+        .put('')
+        .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+        .send({
+            title: 'HelloWorld - PUT',
+            content: 'my first tdd app - PUT'
+        })
+        .expect(200)
+        .then( res => {
+            expect(res.body).to.have.property('notes')
+            const { notes } = res.body
+            expect(notes).to.be.an('array')
+            expect(notes[0].title).to.equal('HelloWorld - PUT')
+            expect(notes[0].content).to.equal('my first tdd app - PUT')
+            done()
+        })
+    })
+
+    it('DELETE - Should return array of notes without delete note', done => {
+        return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
+        .delete('')
+        .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+        .expect(200)
+        .then( res => {
+            expect(res.body).to.have.property('notes')
+            const { notes } = res.body
+            expect(notes).to.be.an('array').of.length(1)
+            expect(notes[0].id).not.to.equal(testNoteId)
             done()
         })
     })

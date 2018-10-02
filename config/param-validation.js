@@ -31,5 +31,13 @@ const createNote = {
         backgroundColor: Joi.string().default('#ffffff'),
     }
 }
+// POST & PUT /users/:user_id/notes/note_id
+const updateNote = {
+    body: {
+        title: Joi.string().required(),
+        content:Joi.string().required(),
+        backgroundColor: Joi.string(),
+    }
+}
 
-module.exports = { createUser, login, updateUser, createNote }
+module.exports = { createUser, login, updateUser, createNote, updateNote }
