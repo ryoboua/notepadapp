@@ -133,7 +133,7 @@ function deleteNote(req, res ,next) {
             const noteToDelete = user.notes.id(req.params.note_id)
             if (noteToDelete){
                 //remove note from notes array
-                user.notes.filter( note => note.id !== noteToDelete.id )
+                user.notes = user.notes.filter( note => note.id !== noteToDelete.id )
                 user.save(function(err, updatedUser) {
                     if (err) {
                         sendAPIError(err, 400, next)

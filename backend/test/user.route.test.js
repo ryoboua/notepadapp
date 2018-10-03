@@ -236,8 +236,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
         .then( res => {
             expect(res.body).to.have.property('notes')
             const { notes } = res.body
-            expect(notes).to.be.an('array').of.length(1)
-            expect(notes[0].id).not.to.equal(testNoteId)
+            expect(notes).to.be.an('array').of.length(0)
             done()
         })
     })
