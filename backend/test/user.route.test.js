@@ -57,14 +57,18 @@ afterAll(async done => {
     mongoose.disconnect(done)
   })
 
-describe('# GET /users/:user_id', () => {
+describe('# GET /users', () => {
     it('should return user *** full login test', done => {
-        return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
+        return request(`http://localhost:3000/users/`)
         .get('')
         .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .expect(200)
         .then(res => {
-            expect(res.body.user_id).to.equal(loggedInUser.user._id)
+            expect(res.body).to.have.property('user')
+            expect(res.body).to.have.property('JWT')
+            const { user ,JWT} = res.body
+            expect(user._id).to.equal(loggedInUser.user._id)
+            testHelpers.validUserDataAndJWT(user, user, JWT)
             return done()
         })
     })
@@ -86,6 +90,19 @@ describe('# POST /users/:user_id', () => {
                     return done()
                 })
    })
+
+   it('Posting with valid JWT & invalid user_id - should return - 403 Forbidden ', done => {
+    return request(`http://localhost:3000/users/1472937`)
+            .post('')
+            .set('authorization', `Bearer ${loggedInUser.JWT}`)
+            .send(batman)
+            .expect(403)
+            .then(res => {
+                return done()
+            })
+    })
+
+   
 
    it('Posting with invalid JWT & invalid user_id - should return - 403 Forbidden ', done => {
     return request(`http://localhost:3000/users/12343ffdf`)
@@ -137,6 +154,7 @@ describe('# POST /users/:user_id', () => {
                     return done()
                 })
     })
+
 })
 
 describe('# POST /users/:user_id/notes/:note_id', () => {
@@ -159,6 +177,19 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
             return done()
         })
     })
+    it('should not be able to create note if another user_id is provided in params', done => {
+        return request(`http://localhost:3000/users/5bb42aa5a836d20991b50bb7/notes`)
+        .post('')
+        .set('authorization', `Bearer ${loggedInUser.JWT}`)
+        .send({
+            title: 'Note5000',
+            content: 'LA FLAME!!!!!!!!!'
+        })
+        .expect(403)
+        .then(res => {
+            return done()
+        }) 
+    } )
     it('POST - Should return array with updated note', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
         .post('')
@@ -210,4 +241,17 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
             done()
         })
     })
+    it('Posting with valid JWT & invalid user_id - should return - 403 Forbidden ', done => {
+        return request(`http://localhost:3000/users/5bb42aa5a836d20991b50bb7/notes/${testNoteId}`)
+        .post('')
+        .set('authorization', `Bearer ${loggedInUser.JWT}`)
+        .send({
+            title: 'Note5000',
+            content: 'LA FLAME!!!!!!!!!'
+        })
+        .expect(403)
+        .then(res => {
+            return done()
+        })
+        })
 })

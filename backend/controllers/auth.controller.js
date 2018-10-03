@@ -67,16 +67,20 @@ function verifyJWT(req, res, next) {
                     res.sendStatus(403)
                 } else {
                     //token verified
-                    //verify that user id matches the one in params
                     //call next middleware
-                    //TODO - write test case that breaks this
-                    if (authData.user_id === req.params.user_id) {
                         req.user_id = authData.user_id
-                        return next()
-                    } else {
-                        res.sendStatus(403)
-                    }
-
+                        //add user to request
+                        User.findById(authData.user_id, function(err, user) {
+                            if (err) {
+                                sendAPIError(err, 400, next)
+                            } else if (user) {
+                                user.password = undefined
+                                req.user = user
+                                next()
+                                } else {
+                                sendAPIError('Unable to update user', 400, next)
+                            }
+                        })                        
                 }
             })
     } else {
@@ -85,4 +89,12 @@ function verifyJWT(req, res, next) {
     }
 }
 
-module.exports = { login, verifyJWT, issueJWT }
+function checkUserParams(req, res, next) {
+    if (req.params.user_id === req.user_id) {
+        next()
+    } else {
+        res.sendStatus(403)   
+    }
+}
+
+module.exports = { login, verifyJWT, issueJWT, checkUserParams }

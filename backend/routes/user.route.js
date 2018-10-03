@@ -7,10 +7,21 @@ import userCtrl from '../controllers/user.controller'
 const router = express.Router();
 
 /* GET users by id. */
+router.route('/')
+.get(
+    authCtrl.verifyJWT,
+    authCtrl.issueJWT,
+    userCtrl.createUserResponse,
+)
+
 router.route('/:user_id')
-.all(authCtrl.verifyJWT)
+.all(
+    authCtrl.verifyJWT, 
+    authCtrl.checkUserParams
+    )
 .get( 
-    (req, res ) => res.json({ user_id: req.user_id }))
+    userCtrl.createUserResponse
+    )
 .post(
     validate(paramValidation.updateUser), 
     userCtrl.updateUser,
@@ -19,14 +30,20 @@ router.route('/:user_id')
 )
 
 router.route('/:user_id/notes')
-.all(authCtrl.verifyJWT)
+.all(
+    authCtrl.verifyJWT, 
+    authCtrl.checkUserParams
+    )
 .post(
     validate(paramValidation.createNote),
     userCtrl.createNote
 )
 
 router.route('/:user_id/notes/:note_id')
-.all(authCtrl.verifyJWT)
+.all(
+    authCtrl.verifyJWT, 
+    authCtrl.checkUserParams
+    )
 .post(
     validate(paramValidation.updateNote),
     userCtrl.updateNote
