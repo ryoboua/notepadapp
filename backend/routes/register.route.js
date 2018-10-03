@@ -11,7 +11,7 @@ router.route('/')
 .post(  
         validate(paramValidation.createUser),
         userCtrl.createUser, 
-        authCtrl.issueJwtToken,
+        authCtrl.issueJWT,
         userCtrl.createUserResponse
     )
 

@@ -53,16 +53,16 @@ describe('# POST /register', () => {
             });    
     })
 
-    it('Successful registration should return should return json object with user data and JWTToken', done => {
+    it('Successful registration should return should return json object with user data and JWT', done => {
         return register
             .post('')
             .send(testUser.validRegistrationCredentials)
             .expect(200)
             .then(res => {
                 expect(res.body).to.have.property('user');
-                expect(res.body).to.have.property('JWTToken');
-                const { user, JWTToken } = res.body
-                testHelpers.validUserDataAndJWTToken(user, testUser.validRegistrationCredentials, JWTToken)
+                expect(res.body).to.have.property('JWT');
+                const { user, JWT } = res.body
+                testHelpers.validUserDataAndJWT(user, testUser.validRegistrationCredentials, JWT)
                 done()
             })
     })

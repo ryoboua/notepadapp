@@ -24,7 +24,7 @@ function createUserResponse(req, res, next) {
     if (req.user && req.token) {
         res.json({
             user: req.user,
-            JWTToken: req.token,
+            JWT: req.token,
         })
     } else {
         next()

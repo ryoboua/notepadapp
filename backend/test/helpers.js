@@ -2,11 +2,11 @@ const expect = require('chai').expect
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
-const validUserDataAndJWTToken = (actualUser, expectedUser, JWTToken) => {
+const validUserDataAndJWT = (actualUser, expectedUser, JWT) => {
     expect(actualUser.name).to.equal(expectedUser.name)
     expect(actualUser.email).to.equal(expectedUser.email)
     expect(actualUser).to.not.have.property('password')
-    jwt.verify(JWTToken, config.jwtSecret, 
+    jwt.verify(JWT, config.jwtSecret, 
         (err, authData) => {
             expect(err).to.not.be.ok
             expect(authData.name).to.equal(expectedUser.name)
@@ -14,4 +14,4 @@ const validUserDataAndJWTToken = (actualUser, expectedUser, JWTToken) => {
         })
 }
 
-module.exports = { validUserDataAndJWTToken }
+module.exports = { validUserDataAndJWT }

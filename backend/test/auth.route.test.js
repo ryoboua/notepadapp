@@ -26,17 +26,17 @@ afterAll(async done => {
 })
 
 describe('# POST /auth/login', () => {
-  it('Should return json object with user data and JWTToken', done => {
+  it('Should return json object with user data and JWT', done => {
     return login
       .post('')
       .send(testUser.validUserCredentials)
       .expect(200)
       .then(res => {
         expect(res.body).to.have.property('user');
-        expect(res.body).to.have.property('JWTToken');
+        expect(res.body).to.have.property('JWT');
         
-        const { user, JWTToken } = res.body
-        testHelpers.validUserDataAndJWTToken(user, testUser.validUserCredentials, JWTToken)
+        const { user, JWT } = res.body
+        testHelpers.validUserDataAndJWT(user, testUser.validUserCredentials, JWT)
         done()
       })
       .catch(err => {

@@ -8,11 +8,11 @@ const router = express.Router();
 
 router.route('/login')
 
-.get(authCtrl.verifyJwtToken,(req, res) => res.send(req.user_id))
+.get(authCtrl.verifyJWT,(req, res) => res.send(req.user_id))
 .post(
     validate(paramValidation.login), 
     authCtrl.login, 
-    authCtrl.issueJwtToken,
+    authCtrl.issueJWT,
     userCtrl.createUserResponse
 )
 

@@ -36,7 +36,7 @@ function login(req, res, next) {
     } 
 }
 
-function issueJwtToken(req, res, next) {
+function issueJWT(req, res, next) {
     if (req.user) {
         const { _id, name } = req.user
         //create jwt with user if and name encoded
@@ -53,7 +53,7 @@ function issueJwtToken(req, res, next) {
     }
 }
 
-function verifyJwtToken(req, res, next) {
+function verifyJWT(req, res, next) {
     //get auth header value
     const bearerHeader = req.headers['authorization']
     // check is bearHeader is undefined
@@ -85,4 +85,4 @@ function verifyJwtToken(req, res, next) {
     }
 }
 
-module.exports = { login, verifyJwtToken, issueJwtToken }
+module.exports = { login, verifyJWT, issueJWT }

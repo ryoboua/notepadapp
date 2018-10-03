@@ -30,18 +30,18 @@ beforeAll(async done => {
         .send(testUser.validUserCredentials)
         .then( res => {
             expect(res.body).to.have.property('user')
-            expect(res.body).to.have.property('JWTToken')
-            expect(res.body.JWTToken).to.be.a('string')
+            expect(res.body).to.have.property('JWT')
+            expect(res.body.JWT).to.be.a('string')
             expect(res.body.user._id).to.be.a('string')
 
             loggedInUser = {
                 user: res.body.user,
-                JWTToken: res.body.JWTToken
+                JWT: res.body.JWT
             }
 
             expect(loggedInUser).to.have.property('user')
-            expect(loggedInUser).to.have.property('JWTToken')
-            expect(loggedInUser.JWTToken).to.be.a('string')
+            expect(loggedInUser).to.have.property('JWT')
+            expect(loggedInUser.JWT).to.be.a('string')
             expect(loggedInUser.user._id).to.be.a('string')
             expect(loggedInUser.user._id).to.be.equal(testUser.validUserCredentials.id)
             expect(loggedInUser.user.name).to.be.equal(testUser.validUserCredentials.name)
@@ -61,7 +61,7 @@ describe('# GET /users/:user_id', () => {
     it('should return user *** full login test', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
         .get('')
-        .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+        .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .expect(200)
         .then(res => {
             expect(res.body.user_id).to.equal(loggedInUser.user._id)
@@ -71,18 +71,18 @@ describe('# GET /users/:user_id', () => {
 })
 
 describe('# POST /users/:user_id', () => {
-    it('Should return updated user with new JWTToken', done => {
+    it('Should return updated user with new JWT', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
                 .post('')
-                .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+                .set('authorization', `Bearer ${loggedInUser.JWT}`)
                 .send(batman)
                 .expect(200)
                 .then(res => {
                     expect(res.body).to.have.property('user')
-                    expect(res.body).to.have.property('JWTToken')
-                    const { user ,JWTToken} = res.body
+                    expect(res.body).to.have.property('JWT')
+                    const { user ,JWT} = res.body
                     expect(user._id).to.equal(loggedInUser.user._id)
-                    testHelpers.validUserDataAndJWTToken(user, batman, JWTToken)
+                    testHelpers.validUserDataAndJWT(user, batman, JWT)
                     return done()
                 })
    })
@@ -101,7 +101,7 @@ describe('# POST /users/:user_id', () => {
     it('Posting with valid JWT & valid user_id but with nothing in body - should return - 400', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
                 .post('')
-                .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+                .set('authorization', `Bearer ${loggedInUser.JWT}`)
                 .expect(400)
                 .then(res => {
                     expect(res.body).to.have.property('status', 400)
@@ -112,7 +112,7 @@ describe('# POST /users/:user_id', () => {
     it('Posting with valid JWT & valid user_id but with empty strings - should return - 400', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
                 .post('')
-                .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+                .set('authorization', `Bearer ${loggedInUser.JWT}`)
                 .send({
                     name: '',
                     email: '',
@@ -128,7 +128,7 @@ describe('# POST /users/:user_id', () => {
     it('Updating user account with an email that already exists - should return - 400', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
                 .post('')
-                .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+                .set('authorization', `Bearer ${loggedInUser.JWT}`)
                 .send(testUser.existingValidUser)
                 .expect(400)
                 .then(res => {
@@ -143,7 +143,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
     it('Should create note and return new array of notes', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes`)
         .post('')
-        .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+        .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .send({
             title: 'Note5000',
             content: 'LA FLAME!!!!!!!!!'
@@ -162,7 +162,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
     it('POST - Should return array with updated note', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
         .post('')
-        .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+        .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .send({
             title: 'HelloWorld - POST',
             content: 'my first tdd app - POST'
@@ -181,7 +181,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
     it('PUT - Should return array with updated note', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
         .put('')
-        .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+        .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .send({
             title: 'HelloWorld - PUT',
             content: 'my first tdd app - PUT'
@@ -200,7 +200,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
     it('DELETE - Should return array of notes without delete note', done => {
         return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
         .delete('')
-        .set('authorization', `Bearer ${loggedInUser.JWTToken}`)
+        .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .expect(200)
         .then( res => {
             expect(res.body).to.have.property('notes')
