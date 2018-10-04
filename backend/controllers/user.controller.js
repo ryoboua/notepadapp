@@ -97,8 +97,8 @@ function updateNote(req, res, next) {
         if (err) {
             sendAPIError(err, 400, next)
         } else if (user){
-            const updatedNote = user.notes.id(req.params.note_id)
             const { title, content, backgroundColor } = req.body
+            const updatedNote = user.notes.id(req.params.note_id)
             updatedNote.title = title
             updatedNote.content = content
             updatedNote.backgroundColor = backgroundColor
@@ -130,22 +130,16 @@ function deleteNote(req, res ,next) {
         if (err) {
             sendAPIError(err, 400, next)
         } else if (user){
-            const noteToDelete = user.notes.id(req.params.note_id)
-            if (noteToDelete){
-                //remove note from notes array
-                user.notes = user.notes.filter( note => note.id !== noteToDelete.id )
-                user.save(function(err, updatedUser) {
-                    if (err) {
-                        sendAPIError(err, 400, next)
-                    } else {
-                        res.json({
-                            notes: updatedUser.notes
-                        });
-                    }
-                })
-            } else {
-                sendAPIError('Unable to find the note you request to delete', 400, next)
-            }
+            user.notes.id(req.params.note_id).remove()
+            user.save(function(err, updatedUser) {
+                if (err) {
+                    sendAPIError(err, 400, next)
+                } else {
+                    res.json({
+                        notes: updatedUser.notes
+                    });
+                }
+            })
         } else {
             sendAPIError('Unable to find user', 400, next)
         }
