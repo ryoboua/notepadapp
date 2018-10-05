@@ -19,7 +19,7 @@ export default class AddNoteForm extends Component {
       return (
         <div>
           <Modal isOpen={this.props.modal}>
-            <ModalHeader>Create a note</ModalHeader>
+            <ModalHeader>Create a note.</ModalHeader>
             <ModalBody>
                 <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                     <FormGroup>

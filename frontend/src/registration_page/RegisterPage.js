@@ -19,7 +19,7 @@ export default class RegisterPage extends Component {
         return (
             <div className="dark_template text-center pt-5">
                 <div className="p-3 mb-5 bg-white rounded w-25 mx-auto" >
-                    <h3 className="text-black text-left">Create your account</h3>
+                    <h3 className="text-black text-left">Create your account.</h3>
                     <br />
                     <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                         <FormGroup>
