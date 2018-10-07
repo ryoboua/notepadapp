@@ -5,8 +5,10 @@ const mongoose = require('mongoose')
 const config = require('../config/config')
 const User = require('../models/user.model')
 const testHelpers = require('./helpers')
-const mongoURI = config.mongo.host;
-const register = request('http://localhost:3000/register')
+const mongoURI = config.mongo.host
+const port = config.port
+
+const register = request(`http://localhost:${port}/register`)
 
 beforeAll(async done => {
     await mongoose.connect(mongoURI, { useNewUrlParser: true })
@@ -63,6 +65,15 @@ describe('# POST /register', () => {
                 expect(res.body).to.have.property('JWT');
                 const { user, JWT } = res.body
                 testHelpers.validUserDataAndJWT(user, testUser.validRegistrationCredentials, JWT)
+                done()
+            })
+    })
+    it('Should not be able to create a user with a password that is less than 8 characters in length', done => {
+        return register
+            .post('')
+            .send(testUser.invalidPasswordLength)
+            .expect(400)
+            .then(res => {
                 done()
             })
     })
