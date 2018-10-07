@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import User from './models/user.model';
 
 const mongoURI = config.mongo.host;
+const port = config.port
 mongoose.connect(mongoURI, { useNewUrlParser: true });
 mongoose.connection.once('open', () => {
     console.log('Connected to Mongo DB')
@@ -12,8 +13,8 @@ mongoose.connection.on('error', () => {
     throw new Error(`unable to connect to database: ${mongoURI}`);
 });
   
-app.listen(3000, () => {
-    console.log('Server is up! port 3000')
+app.listen(port, () => {
+    console.log('Server is up! port ' + port)
 })
 
 const intializedDatabase = async () => {

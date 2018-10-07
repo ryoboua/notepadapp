@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const config = {
     env: '',
-    port: '',
+    port: process.env.PORT,
     mongooseDebug: '',
     jwtSecret: process.env.JWTSECRET,
     mongo: {
