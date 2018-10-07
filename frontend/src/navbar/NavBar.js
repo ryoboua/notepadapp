@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navbar, NavbarBrand, Button } from 'reactstrap'
 
-const NavBar = ({ name ,showLogOut, logout  }) => (
+export default ({ name ,showLogOut, logout  }) => (
             <div>
                 <Navbar color="danger" dark expand="md">
                     <NavbarBrand href="/">NotePadApp.</NavbarBrand>
@@ -18,6 +18,3 @@ const NavBar = ({ name ,showLogOut, logout  }) => (
                 </Navbar>
             </div>
         )
-
-
-export default NavBar

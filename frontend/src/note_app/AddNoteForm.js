@@ -24,11 +24,11 @@ export default class AddNoteForm extends Component {
                 <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                     <FormGroup>
                         <Label for="name">Title</Label>
-                        <Input type="text" name="title" id="title" placeholder="Enter a title" onChange={this.handleChange} />
+                        <Input type="text" name="title" id="title" required placeholder="Enter a title" onChange={this.handleChange} />
                     </FormGroup>
                     <FormGroup>
                         <Label for="email">Content</Label>
-                        <Input type="textarea" name="content" id="content" placeholder="Enter a text" onChange={this.handleChange} />
+                        <Input type="textarea" name="content" id="content" required placeholder="Enter a text" onChange={this.handleChange} />
                     </FormGroup>
                     {/* <FormGroup>
                         <Label for="password">Password</Label>

@@ -33,11 +33,11 @@ export default class Note extends Component {
                 <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                     <FormGroup>
                         <Label for="name">Title</Label>
-                        <Input type="text" name="title" id="title" value={title} onChange={this.handleChange} />
+                        <Input type="text" name="title" id="title" value={title} required onChange={this.handleChange} />
                     </FormGroup>
                     <FormGroup>
                         <Label for="email">Content</Label>
-                        <Input type="textarea" name="content" id="content" value={content} onChange={this.handleChange} />
+                        <Input type="textarea" name="content" id="content" value={content} required onChange={this.handleChange} />
                     </FormGroup>
                     {/* <FormGroup>
                         <Label for="password">Password</Label>
