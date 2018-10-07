@@ -7,12 +7,14 @@ const User = require('../models/user.model')
 const testHelpers = require('./helpers')
 
 //Global test variables
-const mongoURI = config.mongo.host;
+const mongoURI = config.mongo.host
+const port = config.port
+const baseUrl = `http://localhost:${port}`
 let loggedInUser = {}
 const batman = {
     name: 'Batman',
     email: 'test@yahoo.com',
-    password: '123temp'
+    password: '123456temp'
 }
 let testNoteId = ''
 
@@ -25,7 +27,7 @@ beforeAll(async done => {
     MockUser.save( async function(err, result) {
         if (err) throw err
         testUser.validUserCredentials.id = result.id
-        await request('http://localhost:3000/auth/login')
+        await request(`${baseUrl}/auth/login`)
         .post('')
         .send(testUser.validUserCredentials)
         .then( res => {
@@ -59,7 +61,7 @@ afterAll(async done => {
 
 describe('# GET /users', () => {
     it('should return user *** full login test', done => {
-        return request(`http://localhost:3000/users/`)
+        return request(`${baseUrl}/users/`)
         .get('')
         .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .expect(200)
@@ -76,7 +78,7 @@ describe('# GET /users', () => {
 
 describe('# POST /users/:user_id', () => {
     it('Should return updated user with new JWT', done => {
-        return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
+        return request(`${baseUrl}/users/${loggedInUser.user._id}`)
                 .post('')
                 .set('authorization', `Bearer ${loggedInUser.JWT}`)
                 .send(batman)
@@ -92,7 +94,7 @@ describe('# POST /users/:user_id', () => {
    })
 
    it('Posting with valid JWT & invalid user_id - should return - 403 Forbidden ', done => {
-    return request(`http://localhost:3000/users/1472937`)
+    return request(`${baseUrl}/users/1472937`)
             .post('')
             .set('authorization', `Bearer ${loggedInUser.JWT}`)
             .send(batman)
@@ -105,7 +107,7 @@ describe('# POST /users/:user_id', () => {
    
 
    it('Posting with invalid JWT & invalid user_id - should return - 403 Forbidden ', done => {
-    return request(`http://localhost:3000/users/12343ffdf`)
+    return request(`${baseUrl}/users/12343ffdf`)
             .post('')
             .set('authorization', `Bearer 123`)
             .send(batman)
@@ -116,7 +118,7 @@ describe('# POST /users/:user_id', () => {
     })
     
     it('Posting with valid JWT & valid user_id but with nothing in body - should return - 400', done => {
-        return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
+        return request(`${baseUrl}/users/${loggedInUser.user._id}`)
                 .post('')
                 .set('authorization', `Bearer ${loggedInUser.JWT}`)
                 .expect(400)
@@ -127,7 +129,7 @@ describe('# POST /users/:user_id', () => {
                 })
     })
     it('Posting with valid JWT & valid user_id but with empty strings - should return - 400', done => {
-        return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
+        return request(`${baseUrl}/users/${loggedInUser.user._id}`)
                 .post('')
                 .set('authorization', `Bearer ${loggedInUser.JWT}`)
                 .send({
@@ -143,7 +145,7 @@ describe('# POST /users/:user_id', () => {
                 })
     })
     it('Updating user account with an email that already exists - should return - 400', done => {
-        return request(`http://localhost:3000/users/${loggedInUser.user._id}`)
+        return request(`${baseUrl}/users/${loggedInUser.user._id}`)
                 .post('')
                 .set('authorization', `Bearer ${loggedInUser.JWT}`)
                 .send(testUser.existingValidUser)
@@ -159,7 +161,7 @@ describe('# POST /users/:user_id', () => {
 
 describe('# POST /users/:user_id/notes/:note_id', () => {
     it('Should create note and return new array of notes', done => {
-        return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes`)
+        return request(`${baseUrl}/users/${loggedInUser.user._id}/notes`)
         .post('')
         .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .send({
@@ -178,7 +180,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
         })
     })
     it('should not be able to create note if another user_id is provided in params', done => {
-        return request(`http://localhost:3000/users/5bb42aa5a836d20991b50bb7/notes`)
+        return request(`${baseUrl}/users/5bb42aa5a836d20991b50bb7/notes`)
         .post('')
         .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .send({
@@ -191,7 +193,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
         }) 
     } )
     it('POST - Should return array with updated note', done => {
-        return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
+        return request(`${baseUrl}/users/${loggedInUser.user._id}/notes/${testNoteId}`)
         .post('')
         .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .send({
@@ -210,7 +212,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
     })
 
     it('PUT - Should return array with updated note', done => {
-        return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
+        return request(`${baseUrl}/users/${loggedInUser.user._id}/notes/${testNoteId}`)
         .put('')
         .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .send({
@@ -229,7 +231,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
     })
 
     it('DELETE - Should return array of notes without delete note', done => {
-        return request(`http://localhost:3000/users/${loggedInUser.user._id}/notes/${testNoteId}`)
+        return request(`${baseUrl}/users/${loggedInUser.user._id}/notes/${testNoteId}`)
         .delete('')
         .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .expect(200)
@@ -241,7 +243,7 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
         })
     })
     it('Posting with valid JWT & invalid user_id - should return - 403 Forbidden ', done => {
-        return request(`http://localhost:3000/users/5bb42aa5a836d20991b50bb7/notes/${testNoteId}`)
+        return request(`${baseUrl}/users/5bb42aa5a836d20991b50bb7/notes/${testNoteId}`)
         .post('')
         .set('authorization', `Bearer ${loggedInUser.JWT}`)
         .send({
