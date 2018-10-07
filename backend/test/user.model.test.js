@@ -8,7 +8,7 @@ const mongoURI = config.mongo.host;
 const testUser = {
     name: 'John',
     email: 'test@gmail.com',
-    password: 'temp123',
+    password: 'temp123456',
     notes: [
         { 
             title: 'Note1',

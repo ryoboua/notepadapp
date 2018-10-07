@@ -11,7 +11,7 @@ function createUser(req, res, next) {
     })
     user.save(function(err, result){
         if (err) {
-            sendAPIError(err.errors.email.message, 400, next)
+            sendAPIError(err.errors, 400, next)
         } else {
             //remove password from user payload
             result.password = undefined

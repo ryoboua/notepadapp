@@ -5,9 +5,10 @@ const mongoose = require('mongoose')
 const config = require('../config/config')
 const User = require('../models/user.model')
 const testHelpers = require('./helpers')
-const mongoURI = config.mongo.host;
+const mongoURI = config.mongo.host
+const port = config.port
 
-const login = request('http://localhost:3000/auth/login')
+const login = request(`http://localhost:${port}/auth/login`)
 
 beforeAll(async done => {
   await mongoose.connect(mongoURI, { useNewUrlParser: true })
@@ -51,7 +52,7 @@ describe('# POST /auth/login', () => {
       .expect(400)
       .then(res => {
         expect(res.body).to.have.property('status', 400)
-        expect(res.body).to.have.property('message')
+        expect(res.body).to.have.property('message', 'Incorrect password')
         done()
     })
     .catch(err => {
@@ -66,7 +67,7 @@ describe('# POST /auth/login', () => {
       .expect(400)
       .then(res => {
         expect(res.body).to.have.property('status', 400)
-        expect(res.body).to.have.property('message', 'Authentication error')
+        expect(res.body).to.have.property('message', `Sorry, there doesn't seem to be an account assoicated with the email provided.`)
         done()
       })
       .catch(err => {

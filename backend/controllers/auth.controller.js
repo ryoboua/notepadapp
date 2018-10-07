@@ -12,7 +12,7 @@ function login(req, res, next) {
             if (err) sendAPIError(err, 500, next)
             //if no user is returned, return 400 error
             if (!user) {
-                sendAPIError('Authentication error', 400, next)
+                sendAPIError(`Sorry, there doesn't seem to be an account assoicated with the email provided.`, 400, next, 'email')
             } else {
                 //if user is returned, check if password matches the one stored in the db
                 user.comparePassword(password, function(err, matches) {
@@ -26,7 +26,7 @@ function login(req, res, next) {
                         next()
                     } else {
                         //if incorrect password send authentication error
-                        sendAPIError('Authentication error', 400, next)
+                        sendAPIError('Incorrect password', 400, next, 'password')
                     }
                 })
             }
@@ -68,19 +68,19 @@ function verifyJWT(req, res, next) {
                 } else {
                     //token verified
                     //call next middleware
-                        req.user_id = authData.user_id
-                        //add user to request
-                        User.findById(authData.user_id, function(err, user) {
-                            if (err) {
-                                sendAPIError(err, 400, next)
-                            } else if (user) {
-                                user.password = undefined
-                                req.user = user
-                                next()
-                                } else {
-                                sendAPIError('Unable to update user', 400, next)
-                            }
-                        })                        
+                    req.user_id = authData.user_id
+                    //add user to request
+                    User.findById(authData.user_id, function(err, user) {
+                        if (err) {
+                            sendAPIError(err, 400, next)
+                        } else if (user) {
+                            user.password = undefined
+                            req.user = user
+                            next()
+                            } else {
+                            sendAPIError('Unable to update user', 400, next)
+                        }
+                    })                        
                 }
             })
     } else {

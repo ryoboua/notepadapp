@@ -32,12 +32,14 @@ app.use('/', router)
 
 //catch errors
 app.use((err,req, res, next) => {
+    console.log(err)
     if (err.status && err.message) {
         //known errors
-        const { status, message } = err
+        const { status, message, target } = err
         res.status(status).json({ 
             status,
-            message
+            message,
+            target,
         })
     } else {
         //unkown errors
