@@ -53,7 +53,7 @@ const UserSchema = new mongoose.Schema({
         validate: {
             isAsync: true,
             validator: checkIfEmailAlreadyInUse,
-            message:  'The email address is already taken!'
+            message:  'This email address is already taken.'
         },
     },
     password: {
