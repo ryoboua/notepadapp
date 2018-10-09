@@ -14,7 +14,9 @@ let loggedInUser = {}
 const batman = {
     name: 'Batman',
     email: 'test@yahoo.com',
-    password: '123456temp'
+    password: '123456temp',
+    newPassword_1: '123456789',
+    newPassword_2: '123456789'
 }
 let testNoteId = ''
 
@@ -76,22 +78,123 @@ describe('# GET /users', () => {
     })
 })
 
-describe('# POST /users/:user_id', () => {
-    it('Should return updated user with new JWT', done => {
+describe('# POST test for updating user account including password', () => {
+
+    it('Should return updated user', done => {
+        const expectedUser = {
+            name: 'Dave',
+            email: 'test@gmail.com',
+            password: '8charsmininum',
+            newPassword_1: '123456789',
+            newPassword_2: '123456789'
+        }
         return request(`${baseUrl}/users/${loggedInUser.user._id}`)
                 .post('')
                 .set('authorization', `Bearer ${loggedInUser.JWT}`)
-                .send(batman)
+                .send(expectedUser)
                 .expect(200)
                 .then(res => {
                     expect(res.body).to.have.property('user')
                     expect(res.body).to.have.property('JWT')
                     const { user ,JWT} = res.body
                     expect(user._id).to.equal(loggedInUser.user._id)
-                    testHelpers.validUserDataAndJWT(user, batman, JWT)
+                    testHelpers.validUserDataAndJWT(user, expectedUser, JWT)
                     return done()
                 })
-   })
+    })
+    it('# POST test for updating user account NOT including password', done => {
+        const expectedUser = {
+            name: 'Richard',
+            email: 'test@yahoo.com',
+            password: '123456789',
+        }
+        return request(`${baseUrl}/users/${loggedInUser.user._id}`)
+                .post('')
+                .set('authorization', `Bearer ${loggedInUser.JWT}`)
+                .send(expectedUser)
+                .expect(200)
+                .then(res => {
+                    expect(res.body).to.have.property('user')
+                    expect(res.body).to.have.property('JWT')
+                    const { user ,JWT} = res.body
+                    expect(user._id).to.equal(loggedInUser.user._id)
+                    testHelpers.validUserDataAndJWT(user, expectedUser, JWT)
+                    return done()
+                })
+        })
+    
+        it('# POST - Should return validation error when updating account with newPassword_1 & newPassword_2 NOT matching', done => {
+            const expectedUser = {
+                name: 'Richard',
+                email: 'test@yahoo.com',
+                password: '123456789',
+                newPassword_1: '1567bbgg89',
+                newPassword_2: '12345bbbgb6789'
+            }
+            return request(`${baseUrl}/users/${loggedInUser.user._id}`)
+                    .post('')
+                    .set('authorization', `Bearer ${loggedInUser.JWT}`)
+                    .send(expectedUser)
+                    .expect(400)
+                    .then(res => {
+                        expect(res.body).to.have.property('status', 400)
+                        expect(res.body).to.have.property('message', 'validation error')
+                        return done()
+                    })
+        })
+
+        it('# POST - Should return validation error when posting with newPassword_2 and not newPassword_1 in body', done => {
+            const expectedUser = {
+                name: 'Richard',
+                email: 'test@yahoo.com',
+                password: '123456789',
+                newPassword_2: '12345bbbgb6789'
+            }
+            return request(`${baseUrl}/users/${loggedInUser.user._id}`)
+                    .post('')
+                    .set('authorization', `Bearer ${loggedInUser.JWT}`)
+                    .send(expectedUser)
+                    .expect(400)
+                    .then(res => {
+                        expect(res.body).to.have.property('status', 400)
+                        expect(res.body).to.have.property('message', 'validation error')
+                        return done()
+                    })
+        })
+
+   it('Should return status 400 with invalid password', done => {
+    const expectedUser = {
+        name: 'Dave',
+        email: 'test@gmail.com',
+        password: '8charsmininum8',
+    }
+    return request(`${baseUrl}/users/${loggedInUser.user._id}`)
+            .post('')
+            .set('authorization', `Bearer ${loggedInUser.JWT}`)
+            .send(expectedUser)
+            .expect(400)
+            .then(res => {
+                expect(res.body).to.have.property('status', 400)
+                expect(res.body).to.have.property('message', 'The password provided does not match the current password')
+                return done()
+            })
+    })
+    it('Updating user account with an email that already exists - should return - 400', done => {
+        return request(`${baseUrl}/users/${loggedInUser.user._id}`)
+                .post('')
+                .set('authorization', `Bearer ${loggedInUser.JWT}`)
+                .send({...testUser.existingValidUser, password: '123456789'})
+                .expect(400)
+                .then(res => {
+                    expect(res.body).to.have.property('status', 400)
+                    expect(res.body).to.have.property('message', 'This email address is already taken.')
+                    return done()
+                })
+    })
+
+})
+
+describe('# POST test for JWT /users/:user_id', () => {
 
    it('Posting with valid JWT & invalid user_id - should return - 403 Forbidden ', done => {
     return request(`${baseUrl}/users/1472937`)
@@ -144,19 +247,6 @@ describe('# POST /users/:user_id', () => {
                     return done()
                 })
     })
-    it('Updating user account with an email that already exists - should return - 400', done => {
-        return request(`${baseUrl}/users/${loggedInUser.user._id}`)
-                .post('')
-                .set('authorization', `Bearer ${loggedInUser.JWT}`)
-                .send(testUser.existingValidUser)
-                .expect(400)
-                .then(res => {
-                    expect(res.body).to.have.property('status', 400)
-                    expect(res.body).to.have.property('message')
-                    return done()
-                })
-    })
-
 })
 
 describe('# POST /users/:user_id/notes/:note_id', () => {
