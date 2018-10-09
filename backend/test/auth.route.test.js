@@ -52,7 +52,7 @@ describe('# POST /auth/login', () => {
       .expect(400)
       .then(res => {
         expect(res.body).to.have.property('status', 400)
-        expect(res.body).to.have.property('message', 'Incorrect password')
+        expect(res.body).to.have.property('message', 'Incorrect password.')
         done()
     })
     .catch(err => {
