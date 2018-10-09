@@ -34,7 +34,7 @@ export default class RegisterPage extends Component {
                                 type="email" 
                                 name="email" 
                                 id="email" 
-                                //required 
+                                required 
                                 placeholder="Enter a email" 
                                 onChange={this.handleChange} 
                             />
@@ -47,7 +47,7 @@ export default class RegisterPage extends Component {
                                 name="password" 
                                 id="password" 
                                 required
-                                minlength="8"
+                                minLength="8"
                                 placeholder="Enter a random password" 
                                 onChange={this.handleChange} 
                             />

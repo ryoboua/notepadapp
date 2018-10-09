@@ -84,10 +84,12 @@ class App extends Component {
     },
 }
 
+clearClientError = () => this.setState({ clientError: null })
+
   render() {
     const { user, clientError } = this.state
     return (
-      <AppProvider clientError={ clientError } >
+      <AppProvider clientError={ clientError } clearClientError={this.clearClientError} >
         <div className="App">
           <NavBar 
             showLogOut={this.state.user ? true : false} 
