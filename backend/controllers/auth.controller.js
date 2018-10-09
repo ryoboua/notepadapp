@@ -26,7 +26,7 @@ function login(req, res, next) {
                         next()
                     } else {
                         //if incorrect password send authentication error
-                        sendAPIError('Incorrect password', 400, next, 'password')
+                        sendAPIError('Incorrect password.', 400, next, 'password')
                     }
                 })
             }
