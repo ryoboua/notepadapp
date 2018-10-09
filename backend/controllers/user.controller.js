@@ -103,29 +103,33 @@ function updateNote(req, res, next) {
     User.findById({ _id: user_id}, function(err, user){
         if (err) {
             sendAPIError(err, 400, next)
-        } else if (user){
-            const { title, content, backgroundColor } = req.body
-            const updatedNote = user.notes.id(req.params.note_id)
-            updatedNote.title = title
-            updatedNote.content = content
-            updatedNote.backgroundColor = backgroundColor
-            user.notes.map ( note => {
-                if(note.id === updatedNote.id) {
-                    return updatedNote
-                } else {
-                    return note
-                }
-            } )
-            user.save(function(err, updatedUser) {
-                if (err) {
-                    sendAPIError(err, 400, next)
-                } else {
-                    res.json({
-                        notes: updatedUser.notes
-                    });
-                }
-            })
-        } else {
+        } 
+        else if (user){
+            //if note is returned then update else sendAPIError
+            if (user.notes.id(req.params.note_id)) {
+                const { title, content, backgroundColor } = req.body
+                const updatedNote = user.notes.id(req.params.note_id)
+
+                updatedNote.title = title
+                updatedNote.content = content
+                updatedNote.backgroundColor = backgroundColor
+
+                user.notes.map (note => note.id === updatedNote.id ? updatedNote : note)
+                user.save(function(err, updatedUser) {
+                    if (err) {
+                        sendAPIError(err, 400, next)
+                    } else {
+                        res.json({
+                            notes: updatedUser.notes
+                        });
+                    }
+                })
+            } 
+            else {
+                sendAPIError('Unable to find note', 400, next)
+            }
+        } 
+        else {
             sendAPIError('Unable to find user', 400, next)
         }
     })
