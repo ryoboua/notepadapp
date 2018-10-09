@@ -255,4 +255,21 @@ describe('# POST /users/:user_id/notes/:note_id', () => {
             return done()
         })
         })
+
+    it('POST - Should return status 400 when trying to update a none existing note under the user', done => {
+        return request(`${baseUrl}/users/${loggedInUser.user._id}/notes/${undefined}`)
+        .post('')
+        .set('authorization', `Bearer ${loggedInUser.JWT}`)
+        .send({
+            title: 'HelloWorld - POST',
+            content: 'my first tdd app - POST'
+        })
+        .expect(400)
+        .then( res => {
+            expect(res.body).to.have.property('status', 400)
+            expect(res.body).to.have.property('message', 'Unable to find note')
+            return done()
+        })
+    })
+    
 })
