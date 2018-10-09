@@ -33,7 +33,7 @@ describe('# POST /register', () => {
             .send(testUser.validUserCredentials)
             .expect(400)
             .then(res => {
-                expect(res.body).to.have.property('message')
+                expect(res.body).to.have.property('message', 'This email address is already taken.')
                 expect(res.body).to.have.property('status', 400);
                 done()
             })
