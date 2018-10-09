@@ -74,7 +74,6 @@ function verifyJWT(req, res, next) {
                         if (err) {
                             sendAPIError(err, 400, next)
                         } else if (user) {
-                            user.password = undefined
                             req.user = user
                             next()
                             } else {
