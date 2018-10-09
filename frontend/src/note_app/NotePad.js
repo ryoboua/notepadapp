@@ -4,7 +4,7 @@ import AddNoteForm from './AddNoteForm'
 import Note from './Note'
 
 const AddNote = ({ showForm }) => (
-    <div className="col-lg" >
+    <div className="w-100 mt-4" >
         <Button type="button" className="ml-auto p-2" color="primary" onClick={showForm} >Add Note</Button>
     </div>
 )
@@ -24,19 +24,16 @@ export default class NotePad extends Component {
             <div>
                 <AddNoteForm modal={this.state.modal} toggle={this.toggle} createNote={this.props.createNote} />
                 <div className="dark_template text-center pt-5">
-                    <div className="p-3 mb-5 bg-white rounded w-75 mx-auto" >
+                    <div className="d-flex flex-wrap p-3 mb-5 w-75 mx-auto" >
                         { 
                         this.props.notes
-                        .map( (row, index) => (
-                            <div key={index} className="row">
-                                { row.map( note => <Note 
-                                                        key={note._id} 
-                                                        note={note} 
-                                                        updateNote={this.props.updateNote} 
-                                                        deleteNote={this.props.deleteNote}
-                                                    /> ) }
-                            </div>
-                        ) )
+                        .map( note => <Note 
+                                        key={note._id} 
+                                        note={note} 
+                                        updateNote={this.props.updateNote} 
+                                        deleteNote={this.props.deleteNote}
+                                    /> 
+                            )
                         }
                         <AddNote showForm={this.toggle} />
                     </div>

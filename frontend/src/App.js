@@ -9,16 +9,6 @@ import LoginPage from './login_page/LoginPage'
 import NotePad from './note_app/NotePad'
 import client from './client'
 
-const formatNotesArr = notesArr => {
-  if (notesArr) {
-      const newArr = [];
-      while(notesArr.length) newArr.push(notesArr.splice(0,3))
-      return newArr  
-  } else {
-      return null
-  }
-}
-
 class App extends Component {
 
   state = {
@@ -64,7 +54,6 @@ class App extends Component {
       } 
       else if (response.user && response.JWT) {
         localStorage.npaJWT = response.JWT
-        response.user.notes = formatNotesArr(response.user.notes)
         this.setState({ user: response.user })
       } 
       else {
@@ -76,7 +65,7 @@ class App extends Component {
         this.setState({ clientError: response })
       } 
       else if (response.notes) {
-        this.setState({ user: {...this.state.user, notes: formatNotesArr(response.notes) }})
+        this.setState({ user: {...this.state.user, notes: response.notes }})
       } 
       else {
         alert('Something went wrong ' + response)

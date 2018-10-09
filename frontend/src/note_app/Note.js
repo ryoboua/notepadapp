@@ -5,15 +5,16 @@ export default class Note extends Component {
     state = { 
         title: '',
         content: '',
-        //backGroundColor: '',
+        backgroundColor: '',
+        dropdownOpen: false,
     }
     componentDidMount(){
-        const { _id, title, content, backgroundColor, lastUpdated, created  } = this.props.note
+        const { _id ,title, content, backgroundColor } = this.props.note
         this.setState({
             _id,
             title,
             content,
-            lastUpdated,
+            backgroundColor
         })
     }
     handleSubmit = e => {
@@ -26,24 +27,65 @@ export default class Note extends Component {
 
     handleDelete = () => this.props.deleteNote(this.props.note)
 
+    toggle = () => this.setState({ dropdownOpen: !this.state.dropdownOpen })
+
     render() {
-        const { _id, title, content, backgroundColor, lastUpdated, created  } = this.state
+        const { title, content, backgroundColor } = this.state
         return (
-            <div className="col-lg">
+            <div 
+                className="" 
+                style={{ 
+                backgroundColor,
+                border: '5px solid black',
+                borderRadius: '25px',
+                width: '325px',
+                height: '335px',
+                margin: '1em 0.5em',
+                padding: '1em'
+                }} 
+            >
                 <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                     <FormGroup>
-                        <Label for="name">Title</Label>
-                        <Input type="text" name="title" id="title" value={title} required onChange={this.handleChange} />
+                        <Label style={{ color: 'black' }} className="text-black" for="name">Title</Label>
+                        <Input 
+                            type="text" 
+                            name="title" 
+                            id="title" 
+                            value={title} 
+                            required 
+                            onChange={this.handleChange} 
+                            style={{ 
+                                backgroundColor,
+                                color: 'black', 
+                            }} 
+                        />
                     </FormGroup>
                     <FormGroup>
-                        <Label for="email">Content</Label>
-                        <Input type="textarea" name="content" id="content" value={content} required onChange={this.handleChange} />
+                        <Label style={{ color: 'black' }} for="email">Content</Label>
+                        <Input 
+                            type="textarea" 
+                            name="content" 
+                            id="content" 
+                            value={content} 
+                            required 
+                            onChange={this.handleChange} 
+                            style={{ 
+                                backgroundColor,
+                                color: 'black', 
+                            }} 
+                        />
                     </FormGroup>
-                    {/* <FormGroup>
-                        <Label for="password">Password</Label>
-                        <Input type="password" name="password" id="password" placeholder="Enter a random password" onChange={this.handleChange} />
-                    </FormGroup> */}
-                    {/* <p>lastUpdated: { Date(lastUpdated).toString() }</p> */}
+                    <FormGroup>
+                    <select 
+                        name="backgroundColor" 
+                        value={backgroundColor} 
+                        onChange={this.handleChange}
+                        style={{ backgroundColor }} 
+                        >
+                            <option value="#ffffff">White</option>
+                            <option value="#5555FF">Purple</option>
+                    </select>
+                    </FormGroup>
                     <FormGroup className="text-center" >
                         <Input className="btn btn-primary w-25" type="submit" value="Save"/>{' '}
                         <Button  className="btn btn-danger w-25" onClick={this.handleDelete} >Delete</Button>
