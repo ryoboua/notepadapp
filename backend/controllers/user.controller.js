@@ -1,4 +1,6 @@
 import User from '../models/user.model'
+import { shouldPasswordBeUpdated } from '../helpers/user.helper'
+
 import { sendAPIError } from '../helpers/APIError'
 
 
@@ -27,8 +29,54 @@ function createUser(req, res, next) {
         }
     })
 }
+
+function updateUser(req, res, next) {
+    const { _id } = req.user
+    const { name, email , password, newPassword_1, newPassword_2 } = req.body
+        User.findById(_id, function(err, user) {
+            if (err) {
+                sendAPIError(err, 400, next)
+            } else if (user) {
+                user.comparePassword(password, function(err, matches) {
+                    if (err) sendAPIError(err, 500, next)
+                    if(matches) {
+                        user.set({
+                            name,
+                            email,
+                        })
+                        if (newPassword_1 && newPassword_2) user.set({ password: newPassword_1 })
+                        user.save(function(err, updatedUser) {
+                            if (err && err.errors.email) { 
+                                sendAPIError(err.errors.email.message, 400, next, 'email')
+                            } 
+                            else if (err && err.errors.password) {
+                                sendAPIError(err.errors.password.message, 400, next, 'password')
+                            } 
+                            else if (err) {
+                                sendAPIError(err, 500, next)
+                            } 
+                            else {
+                                //remove password from user payload
+                                updatedUser.password = undefined
+                                req.user = updatedUser;
+                                next()   
+                            }
+                        })
+                    } else {
+                        sendAPIError('The password provided does not match the current password', 400, next, 'password')
+                    }
+                })
+                    } else {
+                        sendAPIError('Unable to update user', 400, next)
+            }
+        })
+
+}
+
 function createUserResponse(req, res, next) {
     if (req.user && req.token) {
+        //remove password before sending user data
+        req.user.password = undefined
         res.json({
             user: req.user,
             JWT: req.token,
@@ -36,35 +84,6 @@ function createUserResponse(req, res, next) {
     } else {
         next()
     }
-}
-
-function updateUser(req, res, next) {
-    const { user_id } = req;
-    const { name, email , password } = req.body
- 
-    User.findById(user_id, function(err, user) {
-        if (err) {
-            sendAPIError(err, 400, next)
-        } else if (user) {
-            user.set({
-                name,
-                email,
-                password,
-            })
-            user.save(function(err, updatedUser) {
-                if (err) {
-                    sendAPIError(err, 400, next)
-                } else {
-                    //remove password from user payload
-                    updatedUser.password = undefined
-                    req.user = updatedUser;
-                    next()   
-                }
-            })
-                } else {
-                    sendAPIError('Unable to update user', 400, next)
-        }
-    })
 }
 
 function createNote(req, res, next) {
