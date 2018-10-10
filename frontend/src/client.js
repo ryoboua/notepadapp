@@ -28,6 +28,22 @@ const login = async userCreds => {
             .catch(e => e)
 }
 
+const updateAcc = async userCreds => {
+    console.log(userCreds)
+    const options = {
+        method: 'POST',
+        headers : {
+            'authorization': `Bearer ${localStorage.npaJWT}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+         },
+        body: JSON.stringify(userCreds)
+    }
+    return fetch(`${API_URL}/users/${userCreds.id}`, options)
+            .then(res => res.json())
+            .catch(e => e)
+}
+
 const getUser = async () => {
     const options = {
         headers : {
@@ -79,4 +95,4 @@ const deleteNote = async (userId, note) => {
             .then(res => res.json())
             .catch(e => e)    
 }
-export default { register, login, getUser, createNote, updateNote, deleteNote } 
+export default { register, login, updateAcc, getUser, createNote, updateNote, deleteNote } 
