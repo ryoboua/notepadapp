@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
 
+
 export default class Note extends Component {
     state = { 
         title: '',
         content: '',
         backgroundColor: '',
         dropdownOpen: false,
+        showSaveButton: true,
     }
     componentDidMount(){
         const { _id ,title, content, backgroundColor } = this.props.note
@@ -20,9 +22,10 @@ export default class Note extends Component {
     handleSubmit = e => {
         e.preventDefault()
         this.props.updateNote(this.state)
+        this.setState({ showSaveButton: true })
     }
     handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({ [e.target.name]: e.target.value, showSaveButton: false });
     }
 
     handleDelete = () => this.props.deleteNote(this.props.note)
@@ -30,10 +33,10 @@ export default class Note extends Component {
     toggle = () => this.setState({ dropdownOpen: !this.state.dropdownOpen })
 
     render() {
-        const { title, content, backgroundColor } = this.state
+        const { _id, title, content, backgroundColor, showSaveButton } = this.state
         return (
             <div 
-                className="" 
+                id={_id}
                 style={{ 
                 backgroundColor,
                 border: '5px solid black',
@@ -87,7 +90,7 @@ export default class Note extends Component {
                     </select>
                     </FormGroup>
                     <FormGroup className="text-center" >
-                        <Input className="btn btn-primary w-25" type="submit" value="Save"/>{' '}
+                        <Input className="btn btn-primary w-25" disabled={showSaveButton} type="submit" value="Save"/>{' '}
                         <Button  className="btn btn-danger w-25" onClick={this.handleDelete} >Delete</Button>
                     </FormGroup>
                 </Form>
