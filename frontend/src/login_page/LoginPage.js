@@ -7,7 +7,6 @@ export default class LoginPage extends Component {
     state = { 
         email: '',
         password: '',
-        popoverOpen: false,
     }
     handleSubmit = e => {
         e.preventDefault()
@@ -16,9 +15,6 @@ export default class LoginPage extends Component {
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     }
-    show = () => this.setState({ popoverOpen: true }, 
-                    () => setTimeout( () => this.setState({ popoverOpen: false }) && true, 2000 ))
-      
     render() {
         return (
             <div className="dark_template text-center pt-5">
