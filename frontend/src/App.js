@@ -6,6 +6,7 @@ import NavBar from './navbar/NavBar'
 import LandingPage from './landing_page/LandingPage'
 import RegistrationPage from './registration_page/RegisterPage'
 import LoginPage from './login_page/LoginPage'
+import AccUpdatePage from './account_update_page/AccUpdatePage' 
 import NotePad from './note_app/NotePad'
 import client from './client'
 
@@ -26,6 +27,8 @@ class App extends Component {
   register = userCreds => client.register(userCreds).then(this.handleAPIResponse.forUserData)
   
   login = userCreds => client.login(userCreds).then(this.handleAPIResponse.forUserData)
+
+  updateAcc = userCreds => client.updateAcc(userCreds).then(this.handleAPIResponse.forUserData)
 
   logout = () => {
     localStorage.clear()
@@ -69,6 +72,7 @@ class App extends Component {
       } 
       else {
         alert('Something went wrong ' + response)
+       console.log(response)
       }
     },
 }
@@ -80,13 +84,14 @@ clearClientError = () => this.setState({ clientError: null })
     return (
       <AppProvider clientError={ clientError } clearClientError={this.clearClientError} >
         <div className="App">
-          <NavBar 
-            showLogOut={this.state.user ? true : false} 
-            name={user && user.name}
-            logout={this.logout} 
-          />
+
           <Router>
             <React.Fragment>
+              <NavBar 
+              showLogOut={this.state.user ? true : false} 
+              name={user && user.name}
+              logout={this.logout}
+              />
               <Route exact path='/' render={() => !user ? <LandingPage /> : <Redirect to='/notes'/>} />
               <Route path='/registration' 
                 render={() => !user ? <RegistrationPage register={this.register}/> : <Redirect to='/notes'/>} />
@@ -102,7 +107,21 @@ clearClientError = () => this.setState({ clientError: null })
                                   deleteNote={this.deleteNote} 
                                 /> 
                                 : 
-                                <Redirect to='/'/>} />
+                                <Redirect to='/'/>} 
+              />
+
+              <Route 
+                path='/users/edit'
+                render={() => user ? 
+                  <AccUpdatePage 
+                    updateAcc={this.updateAcc} 
+                    id={user._id} 
+                    name={user.name} 
+                    email={user.email} 
+                  /> 
+                  : 
+                  <Redirect to='/'/>}
+              />
             </React.Fragment>
           </Router>
         </div>
