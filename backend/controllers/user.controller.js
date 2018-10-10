@@ -44,7 +44,7 @@ function updateUser(req, res, next) {
                             name,
                             email,
                         })
-                        if (newPassword_1 && newPassword_2) user.set({ password: newPassword_1 })
+                        if (shouldPasswordBeUpdated(newPassword_1, newPassword_2)) user.set({ password: newPassword_1 })
                         user.save(function(err, updatedUser) {
                             if (err && err.errors.email) { 
                                 sendAPIError(err.errors.email.message, 400, next, 'email')
@@ -70,7 +70,6 @@ function updateUser(req, res, next) {
                         sendAPIError('Unable to update user', 400, next)
             }
         })
-
 }
 
 function createUserResponse(req, res, next) {
