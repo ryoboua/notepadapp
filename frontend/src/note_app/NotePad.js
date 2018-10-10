@@ -4,7 +4,7 @@ import AddNoteForm from './AddNoteForm'
 import Note from './Note'
 
 const AddNote = ({ showForm }) => (
-    <div className="w-100 mt-4" >
+    <div className="w-100 mb-4" >
         <Button type="button" className="ml-auto p-2" color="primary" onClick={showForm} >Add Note</Button>
     </div>
 )
@@ -24,7 +24,8 @@ export default class NotePad extends Component {
             <div>
                 <AddNoteForm modal={this.state.modal} toggle={this.toggle} createNote={this.props.createNote} />
                 <div className="dark_template text-center pt-5">
-                    <div className="d-flex flex-wrap p-3 mb-5 w-75 mx-auto" >
+                    <div className="d-flex flex-wrap justify-content-center mb-5 w-75 mx-auto" >
+                        <AddNote showForm={this.toggle} />
                         { 
                         this.props.notes
                         .map( note => <Note 
@@ -35,7 +36,6 @@ export default class NotePad extends Component {
                                     /> 
                             )
                         }
-                        <AddNote showForm={this.toggle} />
                     </div>
                 </div>
             </div>
