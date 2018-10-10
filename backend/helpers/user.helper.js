@@ -18,7 +18,7 @@ const checkIfEmailAlreadyInUse = function(value, isValid){
 }
 
 const shouldPasswordBeUpdated = function(pass1, pass2){
-    if( (pass1 && pass2) && (pass1.length >= 8 && pass2.length >= 8) ) {
+    if( (pass1 && pass2) && (pass1 === pass2) && (pass1.length >= 8 && pass2.length >= 8) ) {
         return true
     } else {
         return false
