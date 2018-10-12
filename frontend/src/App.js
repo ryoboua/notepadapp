@@ -32,7 +32,7 @@ class App extends Component {
 
   logout = () => {
     localStorage.clear()
-    this.setState({ user: null })
+    this.setState({ user: null, clientError: null })
   }
 
   createNote = note => {
@@ -57,7 +57,7 @@ class App extends Component {
       } 
       else if (response.user && response.JWT) {
         localStorage.npaJWT = response.JWT
-        this.setState({ user: response.user })
+        this.setState({ user: response.user, clientError: null })
       } 
       else {
         alert('Something went wrong ' + response)
@@ -68,11 +68,11 @@ class App extends Component {
         this.setState({ clientError: response })
       } 
       else if (response.notes) {
-        this.setState({ user: {...this.state.user, notes: response.notes }})
+        this.setState({ user: {...this.state.user, notes: response.notes }, clientError: null })
       } 
       else {
         alert('Something went wrong ' + response)
-       console.log(response)
+        console.log(response)
       }
     },
 }
@@ -84,7 +84,6 @@ clearClientError = () => this.setState({ clientError: null })
     return (
       <AppProvider clientError={ clientError } clearClientError={this.clearClientError} >
         <div className="App">
-
           <Router>
             <React.Fragment>
               <NavBar 
