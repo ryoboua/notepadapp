@@ -87,6 +87,7 @@ export default class Note extends Component {
                         >
                             <option value="#ffffff">White</option>
                             <option value="#5555FF">Purple</option>
+                            <option value="#E45D33">Orange</option>
                     </select>
                     </FormGroup>
                     <FormGroup className="text-center" >
