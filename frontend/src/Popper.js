@@ -1,5 +1,5 @@
 import React from 'react'
-import { Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Popover, PopoverHeader } from 'reactstrap';
 import { AppContext } from './AppContext'
 
 export default ({ target }) => (
