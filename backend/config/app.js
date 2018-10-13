@@ -2,13 +2,9 @@ import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import compress from 'compression';
-import methodOverride from 'method-override';
 import cors from 'cors';
 import helmet from 'helmet';
 import router from '../routes/index.route.js';
-//import config from './config';
-
 
 const app = express();
 
@@ -17,8 +13,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
-//app.use(compress());
-//app.use(methodOverride());
 
 app.use(morgan('dev'))
 
@@ -45,8 +39,5 @@ app.use((err,req, res, next) => {
         res.status(500).send(err)
     }
   });
-
-
-
 
 module.exports = app;
