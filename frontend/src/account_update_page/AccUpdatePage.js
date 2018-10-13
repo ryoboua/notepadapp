@@ -67,8 +67,7 @@ export default class AccUpdatePage extends Component {
                         <FormGroup>
                             <Label for="newPassword_1">New Password</Label>
                             <Input 
-                                //type="password" 
-                                type="text"
+                                type="password" 
                                 name="newPassword_1" 
                                 id="newPassword_1" 
                                 minLength="8"
@@ -81,8 +80,7 @@ export default class AccUpdatePage extends Component {
                         <FormGroup>
                             <Label for="newPassword_2">Confirm Password</Label>
                             <Input 
-                                //type="password" 
-                                type="text"
+                                type="password" 
                                 name="newPassword_2" 
                                 id="newPassword_2" 
                                 minLength="8"
@@ -96,8 +94,7 @@ export default class AccUpdatePage extends Component {
                         <FormGroup>
                             <Label for="password">Current Password</Label>
                             <Input 
-                                //type="password" 
-                                type="text"
+                                type="password" 
                                 name="password" 
                                 id="password" 
                                 required
