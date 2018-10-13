@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { AppProvider } from './AppContext'
-import './App.css';
+
 import NavBar from './navbar/NavBar'
 import LandingPage from './landing_page/LandingPage'
 import RegistrationPage from './registration_page/RegisterPage'
@@ -14,7 +14,7 @@ class App extends Component {
 
   state = {
     user: null,
-    clientError: null
+    clientError: null,
   }
 
   componentDidMount(){
@@ -75,15 +75,15 @@ class App extends Component {
         console.log(response)
       }
     },
-}
+  }
 
-clearClientError = () => this.setState({ clientError: null })
+  clearClientError = () => this.setState({ clientError: null })
 
   render() {
     const { user, clientError } = this.state
     return (
       <AppProvider clientError={ clientError } clearClientError={this.clearClientError} >
-        <div className="App">
+        <div className="text-center">
           <Router>
             <React.Fragment>
               <NavBar 
