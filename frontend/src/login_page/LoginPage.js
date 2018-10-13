@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Popper from '../Popper'
-import { Form, Label, Input, FormGroup} from 'reactstrap';
-
+import { Form, Label, Input, FormGroup } from 'reactstrap';
 
 export default class LoginPage extends Component { 
     state = { 
@@ -24,12 +23,26 @@ export default class LoginPage extends Component {
                     <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                         <FormGroup>
                             <Label for="email">Email</Label>
-                            <Input type="email" name="email" id="email" placeholder="Enter a email" required onChange={this.handleChange} />
+                            <Input 
+                                type="email" 
+                                name="email" 
+                                id="email" 
+                                placeholder="Enter a email" 
+                                required 
+                                onChange={this.handleChange} 
+                            />
                             <Popper target="email" />
                         </FormGroup>
                         <FormGroup>
                             <Label for="password">Password</Label>
-                            <Input type="password" name="password" id="password" placeholder="Enter a random password" required onChange={this.handleChange} />
+                            <Input 
+                                type="password" 
+                                name="password" 
+                                id="password" 
+                                placeholder="Enter a random password" 
+                                required 
+                                onChange={this.handleChange} 
+                            />
                             <Popper target="password" />
                         </FormGroup>
                         <FormGroup className="text-center" >
