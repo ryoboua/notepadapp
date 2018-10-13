@@ -25,7 +25,14 @@ export default class RegisterPage extends Component {
                     <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                         <FormGroup>
                             <Label for="name">Name</Label>
-                            <Input type="text" name="name" id="name" required placeholder="Enter a name" onChange={this.handleChange} />
+                            <Input 
+                                type="text" 
+                                name="name" 
+                                id="name" 
+                                required 
+                                placeholder="Enter a name" 
+                                onChange={this.handleChange} 
+                            />
                             <Popper target="name" />
                         </FormGroup>
                         <FormGroup>
