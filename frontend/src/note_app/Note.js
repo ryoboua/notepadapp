@@ -24,9 +24,7 @@ export default class Note extends Component {
         this.props.updateNote(this.state)
         this.setState({ showSaveButton: true })
     }
-    handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value, showSaveButton: false });
-    }
+    handleChange = e => this.setState({ [e.target.name]: e.target.value, showSaveButton: false })
 
     handleDelete = () => this.props.deleteNote(this.props.note)
 
@@ -91,7 +89,13 @@ export default class Note extends Component {
                     </select>
                     </FormGroup>
                     <FormGroup className="text-center" >
-                        <Input className="btn btn-primary w-25" disabled={showSaveButton} type="submit" value="Save"/>{' '}
+                        <Input 
+                            className="btn btn-primary w-25" 
+                            disabled={showSaveButton} 
+                            type="submit" 
+                            value="Save"
+                        />
+                        {' '}
                         <Button  className="btn btn-danger w-25" onClick={this.handleDelete} >Delete</Button>
                     </FormGroup>
                 </Form>
