@@ -15,7 +15,8 @@ const updateUser = {
         email: Joi.string().email().required(),
         password: Joi.string().required(),
         newPassword_1: Joi.string().min(8),
-        newPassword_2: Joi.any().valid(Joi.ref('newPassword_1')).options({ language: { any: { allowOnly: 'must match password' } } })
+        newPassword_2: Joi.any().valid(Joi.ref('newPassword_1'))
+                        .options({ language: { any: { allowOnly: 'must match password' } } })
     }
 }
 const login = {
