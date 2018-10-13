@@ -1,6 +1,5 @@
 import User from '../models/user.model'
 import { shouldPasswordBeUpdated } from '../helpers/user.helper'
-
 import { sendAPIError } from '../helpers/APIError'
 
 
@@ -32,7 +31,7 @@ function createUser(req, res, next) {
 
 function updateUser(req, res, next) {
     const { _id } = req.user
-    const { name, email , password, newPassword_1, newPassword_2 } = req.body
+    const { name, email , password, newPassword_1: pass1, newPassword_2: pass2 } = req.body
         User.findById(_id, function(err, user) {
             if (err) {
                 sendAPIError(err, 400, next)
@@ -44,7 +43,7 @@ function updateUser(req, res, next) {
                             name,
                             email,
                         })
-                        if (shouldPasswordBeUpdated(newPassword_1, newPassword_2)) user.set({ password: newPassword_1 })
+                        if (shouldPasswordBeUpdated(pass1, pass2)) user.set({ password: pass1 })
                         user.save(function(err, updatedUser) {
                             if (err && err.errors.email) { 
                                 sendAPIError(err.errors.email.message, 400, next, 'email')
@@ -118,21 +117,21 @@ function createNote(req, res, next) {
 
 function updateNote(req, res, next) {
     const user_id = req.user_id
-    User.findById({ _id: user_id}, function(err, user){
+    User.findById({ _id: user_id }, function(err, user){
         if (err) {
             sendAPIError(err, 400, next)
-        } 
-        else if (user){
-            //if note is returned then update else sendAPIError
-            if (user.notes.id(req.params.note_id)) {
+        } else if (user){
+            //if a note is returned then update else sendAPIError
+            const note = user.notes.id(req.params.note_id)
+
+            if (note) {
                 const { title, content, backgroundColor } = req.body
-                const updatedNote = user.notes.id(req.params.note_id)
 
-                updatedNote.title = title
-                updatedNote.content = content
-                updatedNote.backgroundColor = backgroundColor
+                note.title = title
+                note.content = content
+                note.backgroundColor = backgroundColor
 
-                user.notes.map (note => note.id === updatedNote.id ? updatedNote : note)
+                user.notes.map (n => n.id === note.id ? note : n)
                 user.save(function(err, updatedUser) {
                     if (err) {
                         sendAPIError(err, 400, next)
@@ -142,12 +141,10 @@ function updateNote(req, res, next) {
                         });
                     }
                 })
-            } 
-            else {
+            } else {
                 sendAPIError('Unable to find note', 400, next)
             }
-        } 
-        else {
+        } else {
             sendAPIError('Unable to find user', 400, next)
         }
     })
