@@ -16,6 +16,7 @@ export default class AccUpdatePage extends Component {
         const { name, email } = this.props
         this.setState({ name, email })
     }
+    
     handleSubmit = e => {
         e.preventDefault()
         const { id } = this.props
@@ -25,8 +26,8 @@ export default class AccUpdatePage extends Component {
             name,
             email,
             password,
-            newPassword_1:  newPassword_1.length >= 8 ? newPassword_1: undefined,
-            newPassword_2:  newPassword_2.length >= 8 ? newPassword_2: undefined,
+            newPassword_1:  newPassword_1.length >= 8 ? newPassword_1 : undefined,
+            newPassword_2:  newPassword_2.length >= 8 ? newPassword_2 : undefined,
         })
     }
     handleChange = (e) => {
