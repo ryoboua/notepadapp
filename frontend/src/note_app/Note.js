@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
+import { GithubPicker } from 'react-color'
+
 
 
 export default class Note extends Component {
@@ -30,6 +32,8 @@ export default class Note extends Component {
 
     toggle = () => this.setState({ dropdownOpen: !this.state.dropdownOpen })
 
+    handleChangeComplete = color => this.setState({ backgroundColor: color.hex, showSaveButton: false })
+
     render() {
         const { _id, title, content, backgroundColor, showSaveButton } = this.state
         return (
@@ -40,7 +44,7 @@ export default class Note extends Component {
                 border: '5px solid black',
                 borderRadius: '25px',
                 width: '325px',
-                height: '335px',
+                height: 'auto',
                 margin: '1em 0.5em',
                 padding: '1em'
                 }} 
@@ -77,16 +81,13 @@ export default class Note extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                    <select 
-                        name="backgroundColor" 
-                        value={backgroundColor} 
-                        onChange={this.handleChange}
-                        style={{ backgroundColor }} 
-                        >
-                            <option value="#ffffff">White</option>
-                            <option value="#5555FF">Purple</option>
-                            <option value="#E45D33">Orange</option>
-                    </select>
+                        <GithubPicker
+                            className="mx-auto"
+                            color={ backgroundColor }
+                            onChangeComplete={ this.handleChangeComplete }
+                            triangle="hide"
+                            width="212px"
+                        />
                     </FormGroup>
                     <FormGroup className="text-center" >
                         <Input 
