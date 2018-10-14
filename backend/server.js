@@ -11,6 +11,6 @@ mongoose.connection.once('open', () => console.log('Connected to Mongo DB'))
 
 mongoose.connection.on('error', () => { throw new Error(`unable to connect to database: ${mongoURI}`) })
   
-app.listen(port, () =>  console.log('Server is up! port ' + port))
+app.listen(port, () =>  console.log('Server is up! port: ' + port))
 
 module.exports = app
