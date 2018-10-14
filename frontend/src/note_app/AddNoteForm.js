@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, Label, Input, FormGroup } from 'reactstrap'
+import { GithubPicker } from 'react-color'
 
 export default class AddNoteForm extends Component {
     state = { 
@@ -20,6 +21,9 @@ export default class AddNoteForm extends Component {
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value })
+
+    handleChangeComplete = color => this.setState({ backgroundColor: color.hex })
+      
 
     render() {
         const {  backgroundColor } = this.state
@@ -58,17 +62,13 @@ export default class AddNoteForm extends Component {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <select 
-                                name="backgroundColor" 
-                                value={backgroundColor} 
-                                onChange={this.handleChange}
-                                style={{ backgroundColor }} 
-                                >
-                                    <option value="#ffffff">White</option>
-                                    <option value="#5555FF">Purple</option>
-                                    <option value="#E45D33">Orange</option>
-
-                            </select>
+                            <GithubPicker
+                                className="mx-auto"
+                                color={ backgroundColor }
+                                onChangeComplete={ this.handleChangeComplete }
+                                triangle="hide"
+                                width="212px"
+                            />
                         </FormGroup>
                         <FormGroup className="text-center" >
                             <Input className="btn btn-danger w-25" type="submit" value="Save"/>
