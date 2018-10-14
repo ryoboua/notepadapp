@@ -15,6 +15,7 @@ class App extends Component {
   state = {
     user: null,
     clientError: null,
+    clientSuccess: null,
   }
 
   componentDidMount(){
@@ -32,7 +33,7 @@ class App extends Component {
 
   logout = () => {
     localStorage.clear()
-    this.setState({ user: null, clientError: null })
+    this.setState({ user: null, clientError: null, clientSuccess: null })
   }
 
   createNote = note => {
@@ -57,7 +58,7 @@ class App extends Component {
       } 
       else if (response.user && response.JWT) {
         localStorage.npaJWT = response.JWT
-        this.setState({ user: response.user, clientError: null })
+        this.setState({ user: response.user, clientError: null, clientSuccess: true })
       } 
       else {
         alert('Something went wrong ' + response)
@@ -68,7 +69,7 @@ class App extends Component {
         this.setState({ clientError: response })
       } 
       else if (response.notes) {
-        this.setState({ user: {...this.state.user, notes: response.notes }, clientError: null })
+        this.setState({ user: {...this.state.user, notes: response.notes }, clientError: null, clientSuccess: true })
       } 
       else {
         alert('Something went wrong ' + response)
