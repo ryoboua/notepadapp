@@ -7,7 +7,7 @@ export default ({ target }) => (
         {
             ({ clientError, clearClientError }) => (
                 <Popover placement="right" isOpen={clientError && clientError.target === target} target={target}>
-                    <PopoverHeader className="d-flex flex-nowrap" >
+                    <PopoverHeader  className="d-flex flex-nowrap" >
                         <div>
                             {clientError && clientError.message}
                         </div>
