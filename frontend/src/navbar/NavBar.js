@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink, Collapse, Button } from 'reactstrap'
-import Media from "react-media";
 import { withRouter } from 'react-router-dom'
 
 class NavigationBar extends Component {
@@ -16,7 +15,7 @@ class NavigationBar extends Component {
     toggleShowForm = () => this.setState({ collapsed: false }, this.props.toggleShowForm)
 
     render() {
-        const { name ,showLogOut } = this.props
+        const { name ,showLogOut, screenWidth } = this.props
         return (
         <div>
             <Navbar color="danger" dark>
@@ -26,11 +25,10 @@ class NavigationBar extends Component {
                     :
                         (
                     <React.Fragment>
-                         <Media query="(max-width: 599px)">
-                            { matches => !matches ? <h4 className="text-white" style={{ marginLeft: 'auto', marginRight: '1.6%' }} >Hello {name}.</h4> : null
-                            }
-                            </Media>
-
+                        { 
+                            screenWidth > 599 ? 
+                            <h4 className="text-white" style={{ marginLeft: 'auto', marginRight: '1.6%' }} >Hello {name}.</h4> : null 
+                        }
                         <Button type="button" className="mr-1 ml-auto" outline color="dark" onClick={this.toggleShowForm} >
                             <i className="fas fa-plus"></i>
                         </Button>
@@ -40,13 +38,13 @@ class NavigationBar extends Component {
                         </Button>      
                         <Collapse isOpen={this.state.collapsed} navbar>
                             <Nav className="pt-4" vertical>
-                                <NavItem className="btn btn-outline-dark ml-auto" style={{ width: '185px', border: '0' }} >
+                                <NavItem className={`btn btn-outline-dark ml-auto ${screenWidth > 769 ? null: 'mr-auto'}`} style={{ width: '185px', border: '0' }} >
                                     <NavLink className="text-white" onClick={this.navigateToNotes} >My Notes</NavLink>
                                 </NavItem>
-                                <NavItem className="btn btn-outline-dark ml-auto" style={{ width: '185px', border: '0' }} >
+                                <NavItem className={`btn btn-outline-dark ml-auto ${screenWidth > 769 ? null: 'mr-auto'}`} style={{ width: '185px', border: '0' }} >
                                     <NavLink className="text-white" onClick={this.navigateToAccEditPage} >Edit Account</NavLink>
                                 </NavItem>
-                                <NavItem className="btn btn-outline-dark ml-auto" style={{ width: '185px', border: '0' }} >
+                                <NavItem className={`btn btn-outline-dark ml-auto ${screenWidth > 769 ? null: 'mr-auto'}`} style={{ width: '185px', border: '0' }} >
                                     <NavLink className="text-white" onClick={this.logout} >Logout</NavLink>
                                 </NavItem>
                             </Nav>
