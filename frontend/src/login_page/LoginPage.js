@@ -17,8 +17,10 @@ export default class LoginPage extends Component {
     render() {
         return (
             <div className="dark_template text-center pt-5">
-                <div className="p-3 mb-5 bg-white rounded w-25 mx-auto" >
-                    <h3 className="text-black text-left">Hey! Welcome back.</h3>
+                <div 
+                    className="p-3 mb-5 bg-white rounded mx-auto" 
+                    style={{ width: this.props.screenWidth > 425 ? '380px' : '100%' }} 
+                 >                    <h3 className="text-black text-left">Hey! Welcome back.</h3>
                     <br />
                     <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                         <FormGroup>
