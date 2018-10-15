@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Collapse, Button } from 'reactstrap'
+import { Navbar, NavbarBrand, Nav, NavItem, NavLink, Collapse, Button } from 'reactstrap'
+import Media from "react-media";
 import { withRouter } from 'react-router-dom'
 
 class NavigationBar extends Component {
@@ -25,24 +26,31 @@ class NavigationBar extends Component {
                     :
                         (
                     <React.Fragment>
-                        <h4 className="text-white mx-auto" >Hello {name}.</h4>
-                        <Button type="button" className="mx-2" outline color="dark" style={{ height: '40px' }} onClick={this.toggleShowForm} >
+                         <Media query="(max-width: 599px)">
+                            { matches => !matches ? <h4 className="text-white" style={{ marginLeft: 'auto', marginRight: '1.6%' }} >Hello {name}.</h4> : null
+                            }
+                            </Media>
+
+                        <Button type="button" className="mr-1 ml-auto" outline color="dark" onClick={this.toggleShowForm} >
                             <i className="fas fa-plus"></i>
                         </Button>
-                        <NavbarToggler onClick={this.toggleNavbar} className="mr-2" style={{borderColor: '#343a40'}} />
-                            <Collapse isOpen={this.state.collapsed} navbar>
-                                <Nav className="pt-4" vertical>
-                                    <NavItem className="btn btn-outline-dark ml-auto" style={{ width: '185px', border: '0' }} >
-                                        <NavLink className="text-white" onClick={this.navigateToNotes} >My Notes</NavLink>
-                                    </NavItem>
-                                    <NavItem className="btn btn-outline-dark ml-auto" style={{ width: '185px', border: '0' }} >
-                                        <NavLink className="text-white" onClick={this.navigateToAccEditPage} >Edit Account</NavLink>
-                                    </NavItem>
-                                    <NavItem className="btn btn-outline-dark ml-auto" style={{ width: '185px', border: '0' }} >
-                                        <NavLink className="text-white" onClick={this.logout} >Logout</NavLink>
-                                    </NavItem>
-                                </Nav>
-                            </Collapse>
+
+                        <Button type="button" className="mx-1" outline color="dark" onClick={this.toggleNavbar} >
+                            <i className="fas fa-bars" ></i>                                                    
+                        </Button>      
+                        <Collapse isOpen={this.state.collapsed} navbar>
+                            <Nav className="pt-4" vertical>
+                                <NavItem className="btn btn-outline-dark ml-auto" style={{ width: '185px', border: '0' }} >
+                                    <NavLink className="text-white" onClick={this.navigateToNotes} >My Notes</NavLink>
+                                </NavItem>
+                                <NavItem className="btn btn-outline-dark ml-auto" style={{ width: '185px', border: '0' }} >
+                                    <NavLink className="text-white" onClick={this.navigateToAccEditPage} >Edit Account</NavLink>
+                                </NavItem>
+                                <NavItem className="btn btn-outline-dark ml-auto" style={{ width: '185px', border: '0' }} >
+                                    <NavLink className="text-white" onClick={this.logout} >Logout</NavLink>
+                                </NavItem>
+                            </Nav>
+                        </Collapse>
                     </React.Fragment>
                         )
                 }
