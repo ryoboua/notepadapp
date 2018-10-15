@@ -5,8 +5,8 @@ import { AppContext } from './AppContext'
 export default ({ target }) => (
     <AppContext.Consumer>
         {
-            ({ clientError, clearClientError }) => (
-                <Popover placement="right" isOpen={clientError && clientError.target === target} target={target}>
+            ({ clientError, clearClientError, screenWidth }) => (
+                <Popover placement={ screenWidth > 425 ? 'right' : 'top'} isOpen={clientError && clientError.target === target} target={target}>
                     <PopoverHeader  className="d-flex flex-nowrap" >
                         <div>
                             {clientError && clientError.message}
