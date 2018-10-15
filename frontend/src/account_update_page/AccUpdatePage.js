@@ -37,8 +37,10 @@ export default class AccUpdatePage extends Component {
         const { name, email, password, newPassword_1, newPassword_2 } = this.state
         return (
             <div className="dark_template text-center pt-5">
-                <div className="p-3 mb-5 bg-white rounded w-25 mx-auto" >
-                    <h3 className="text-black text-left">Update your account.</h3>
+                <div 
+                    className="p-3 mb-5 bg-white rounded mx-auto" 
+                    style={{ maxWidth: this.props.screenWidth > 425 ? '500px' : '100%' }} 
+                 >                    <h3 className="text-black text-left">Update your account.</h3>
                     <br />
                     <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                         <FormGroup>
