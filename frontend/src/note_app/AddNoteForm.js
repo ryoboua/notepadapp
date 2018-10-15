@@ -68,7 +68,7 @@ class AddNoteForm extends Component {
                                 className="mx-auto"
                                 color={ backgroundColor }
                                 onChangeComplete={ this.handleChangeComplete }
-                                width="378px"
+                                width={this.props.screenWidth > 425 ? '378px' : '252px'}
                             />
                         </FormGroup>
                         <FormGroup className="text-center" >
