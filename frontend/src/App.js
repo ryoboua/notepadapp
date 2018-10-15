@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { AppProvider } from './AppContext'
 
 import NavBar from './navbar/NavBar'
+import AddNoteForm from './note_app/AddNoteForm'
 import LandingPage from './landing_page/LandingPage'
 import RegistrationPage from './registration_page/RegisterPage'
 import LoginPage from './login_page/LoginPage'
@@ -16,6 +17,7 @@ class App extends Component {
     user: null,
     clientError: null,
     clientSuccess: null,
+    showForm: false,
   }
 
   componentDidMount(){
@@ -80,6 +82,8 @@ class App extends Component {
 
   clearClientError = () => this.setState({ clientError: null })
 
+  toggleShowForm = () => this.setState({ showForm: !this.state.showForm })
+
   render() {
     const { user, clientError } = this.state
     return (
@@ -91,6 +95,12 @@ class App extends Component {
               showLogOut={this.state.user ? true : false} 
               name={user && user.name}
               logout={this.logout}
+              toggleShowForm={this.toggleShowForm}
+              />
+              <AddNoteForm 
+                toggleShowForm={this.toggleShowForm} 
+                showForm={this.state.showForm} 
+                createNote={this.createNote} 
               />
               <Route exact path='/' render={() => !user ? <LandingPage /> : <Redirect to='/notes'/>} />
               <Route path='/registration' 
@@ -99,17 +109,20 @@ class App extends Component {
                 render={() => !user ? <LoginPage login={this.login} /> : <Redirect to='/notes'/>} />
               <Route 
                 path='/notes' 
-                render={() => user ? 
+                render={
+                        () => user ? 
                                 <NotePad 
-                                  notes={user.notes} 
+                                  notes={user.notes}
+                                  showForm={this.state.showForm}
+                                  toggleShowForm={this.toggleShowForm}
                                   createNote={this.createNote} 
                                   updateNote={this.updateNote} 
                                   deleteNote={this.deleteNote} 
                                 /> 
                                 : 
-                                <Redirect to='/'/>} 
+                                <Redirect to='/'/>
+                        } 
               />
-
               <Route 
                 path='/users/edit'
                 render={() => user ? 
