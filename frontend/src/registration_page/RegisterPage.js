@@ -19,7 +19,10 @@ export default class RegisterPage extends Component {
     render() {
         return (
             <div className="dark_template text-center pt-5">
-                <div className="p-3 mb-5 bg-white rounded w-25 mx-auto" >
+                <div 
+                    className="p-3 mb-5 bg-white rounded mx-auto" 
+                    style={{ width: this.props.screenWidth > 425 ? '380px' : '100%' }} 
+                 >
                     <h3 className="text-black text-left">Create your account.</h3>
                     <br />
                     <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
