@@ -18,6 +18,7 @@ class App extends Component {
     clientError: null,
     clientSuccess: null,
     showForm: false,
+    screenWidth: null,
   }
 
   componentDidMount(){
@@ -25,6 +26,11 @@ class App extends Component {
     //that means the user has already logged in
     //fetch user
     if (localStorage.npaJWT) client.getUser().then(this.handleAPIResponse.forUserData)
+
+    //Screen width
+    this.updateWindowWidth()
+    window.addEventListener('resize', this.updateWindowWidth);
+
   }
 
   register = userCreds => client.register(userCreds).then(this.handleAPIResponse.forUserData)
@@ -84,10 +90,12 @@ class App extends Component {
 
   toggleShowForm = () => this.setState({ showForm: !this.state.showForm })
 
+  updateWindowWidth = () => this.setState({ screenWidth: window.innerWidth })
+
   render() {
-    const { user, clientError } = this.state
+    const { user, clientError, showForm, screenWidth } = this.state
     return (
-      <AppProvider clientError={ clientError } clearClientError={this.clearClientError} >
+      <AppProvider clientError={ clientError } clearClientError={this.clearClientError} screenWidth={screenWidth} >
         <div className="text-center">
           <Router>
             <React.Fragment>
@@ -96,28 +104,31 @@ class App extends Component {
               name={user && user.name}
               logout={this.logout}
               toggleShowForm={this.toggleShowForm}
+              screenWidth={screenWidth}  
               />
               <AddNoteForm 
                 toggleShowForm={this.toggleShowForm} 
                 showForm={this.state.showForm} 
-                createNote={this.createNote} 
+                createNote={this.createNote}
+                screenWidth={screenWidth}  
               />
               <Route exact path='/' render={() => !user ? <LandingPage /> : <Redirect to='/notes'/>} />
               <Route path='/registration' 
-                render={() => !user ? <RegistrationPage register={this.register}/> : <Redirect to='/notes'/>} />
+                render={() => !user ? <RegistrationPage register={this.register} screenWidth={screenWidth} /> : <Redirect to='/notes'/>} />
               <Route path='/auth/login' 
-                render={() => !user ? <LoginPage login={this.login} /> : <Redirect to='/notes'/>} />
+                render={() => !user ? <LoginPage login={this.login} screenWidth={screenWidth} /> : <Redirect to='/notes'/>} />
               <Route 
                 path='/notes' 
                 render={
                         () => user ? 
                                 <NotePad 
                                   notes={user.notes}
-                                  showForm={this.state.showForm}
+                                  showForm={showForm}
                                   toggleShowForm={this.toggleShowForm}
                                   createNote={this.createNote} 
                                   updateNote={this.updateNote} 
-                                  deleteNote={this.deleteNote} 
+                                  deleteNote={this.deleteNote}
+                                  screenWidth={screenWidth} 
                                 /> 
                                 : 
                                 <Redirect to='/'/>
@@ -131,6 +142,7 @@ class App extends Component {
                     id={user._id} 
                     name={user.name} 
                     email={user.email} 
+                    screenWidth={screenWidth} 
                   /> 
                   : 
                   <Redirect to='/'/>}
