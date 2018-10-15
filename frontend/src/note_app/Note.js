@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
-import { GithubPicker } from 'react-color'
+import { CirclePicker } from 'react-color'
 
 
 
@@ -9,7 +9,6 @@ export default class Note extends Component {
         title: '',
         content: '',
         backgroundColor: '',
-        dropdownOpen: false,
         showSaveButton: true,
     }
     componentDidMount(){
@@ -30,8 +29,6 @@ export default class Note extends Component {
 
     handleDelete = () => this.props.deleteNote(this.props.note)
 
-    toggle = () => this.setState({ dropdownOpen: !this.state.dropdownOpen })
-
     handleChangeComplete = color => this.setState({ backgroundColor: color.hex, showSaveButton: false })
 
     render() {
@@ -40,13 +37,13 @@ export default class Note extends Component {
             <div 
                 id={_id}
                 style={{ 
-                backgroundColor,
-                border: '5px solid black',
-                borderRadius: '25px',
-                width: '325px',
-                height: 'auto',
-                margin: '1em 0.5em',
-                padding: '1em'
+                    backgroundColor,
+                    border: '5px solid black',
+                    borderRadius: '25px',
+                    width: '325px',
+                    height: 'auto',
+                    margin: '1em 0.5em',
+                    padding: '1em'
                 }} 
             >
                 <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
@@ -81,13 +78,12 @@ export default class Note extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <GithubPicker
-                            className="mx-auto"
-                            color={ backgroundColor }
-                            onChangeComplete={ this.handleChangeComplete }
-                            triangle="hide"
-                            width="212px"
-                        />
+                    <CirclePicker
+                                className="mx-auto"
+                                color={ backgroundColor }
+                                onChangeComplete={ this.handleChangeComplete }
+                                width="252px"
+                            />
                     </FormGroup>
                     <FormGroup className="text-center" >
                         <Input 
