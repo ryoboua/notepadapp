@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, Label, Input, FormGroup } from 'reactstrap'
-import { GithubPicker } from 'react-color'
+import { withRouter } from 'react-router-dom'
+import { CirclePicker } from 'react-color'
 
-export default class AddNoteForm extends Component {
+class AddNoteForm extends Component {
     state = { 
         title: '',
         content: '',
@@ -12,12 +13,14 @@ export default class AddNoteForm extends Component {
     handleSubmit = e => {
         e.preventDefault()
         this.props.createNote(this.state)
-        this.props.toggle()
+        //TODO should check to see if not was succesfully created before moving on
         this.setState({ 
             title: '',
             content: '',
             backgroundColor: '#ffffff', 
         })
+        this.props.toggleShowForm()
+        this.props.history.push('/notes')
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value })
@@ -28,8 +31,7 @@ export default class AddNoteForm extends Component {
     render() {
         const {  backgroundColor } = this.state
         return (
-            <div>
-                <Modal style={{ backgroundColor }} isOpen={this.props.modal}>
+            <Modal style={{ backgroundColor }} isOpen={this.props.showForm}>
                 <ModalHeader style={{ backgroundColor }} >Create a note.</ModalHeader>
                 <ModalBody style={{ backgroundColor }} >
                     <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
@@ -62,12 +64,11 @@ export default class AddNoteForm extends Component {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <GithubPicker
+                            <CirclePicker
                                 className="mx-auto"
                                 color={ backgroundColor }
                                 onChangeComplete={ this.handleChangeComplete }
-                                triangle="hide"
-                                width="212px"
+                                width="378px"
                             />
                         </FormGroup>
                         <FormGroup className="text-center" >
@@ -76,10 +77,13 @@ export default class AddNoteForm extends Component {
                     </Form>
                 </ModalBody>
                 <ModalFooter style={{ backgroundColor }} >
-                    <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>{' '}
+                    <Button color="secondary" onClick={this.props.toggleShowForm}>Cancel</Button>{' '}
                 </ModalFooter>
-                </Modal>
-            </div>
+            </Modal>
         )
     }
   }
+
+
+
+export default withRouter(AddNoteForm)
