@@ -2,9 +2,22 @@ import React, { Component } from 'react'
 import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
 import { CirclePicker } from 'react-color'
 
+const mobileStyle = {
+    width: '100%',
+    height: 'auto',
+    padding: '1em',
+    borderRadius: '25px',
+    }
+const desktopStyle = {
+    border: '5px solid black',
+    borderRadius: '25px',
+    width: '325px',
+    height: 'auto',
+    margin: '1em 0.5em',
+    padding: '1em',
+}
 
-
-export default class Note extends Component {
+class Note extends Component {
     state = { 
         title: '',
         content: '',
@@ -33,18 +46,16 @@ export default class Note extends Component {
 
     render() {
         const { _id, title, content, backgroundColor, showSaveButton } = this.state
+        const noteStyle = this.props.screenWidth > 425 ? desktopStyle : mobileStyle
         return (
             <div 
                 id={_id}
+                className="my-3"
                 style={{ 
                     backgroundColor,
-                    border: '5px solid black',
-                    borderRadius: '25px',
-                    width: '325px',
-                    height: 'auto',
-                    margin: '1em 0.5em',
-                    padding: '1em'
+                    ...noteStyle,
                 }} 
+ 
             >
                 <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
                     <FormGroup>
@@ -100,3 +111,5 @@ export default class Note extends Component {
         )
     }
 }
+
+export default Note
