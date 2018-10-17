@@ -11,4 +11,4 @@ Backend
  - Mongoosejs
  - Routes proctected using Json Web Tokens
  - Validation done with Joi
- - Database is MongoDB
+ - Database: MongoDB
