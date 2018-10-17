@@ -3,7 +3,7 @@
 Frontend
  - React
  - React-Router
- - BootStrap 4
+ - Bootstrap 4
  - Reactstrap
  
 Backend
