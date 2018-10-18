@@ -22,7 +22,7 @@ class Note extends Component {
         title: '',
         content: '',
         backgroundColor: '',
-        showSaveButton: true,
+        disableSaveButton: true,
     }
     componentDidMount(){
         const { _id ,title, content, backgroundColor } = this.props.note
@@ -36,16 +36,16 @@ class Note extends Component {
     handleSubmit = e => {
         e.preventDefault()
         this.props.updateNote(this.state)
-        this.setState({ showSaveButton: true })
+        this.setState({ disableSaveButton: true })
     }
-    handleChange = e => this.setState({ [e.target.name]: e.target.value, showSaveButton: false })
+    handleChange = e => this.setState({ [e.target.name]: e.target.value, disableSaveButton: false })
 
     handleDelete = () => this.props.deleteNote(this.props.note)
 
-    handleChangeComplete = color => this.setState({ backgroundColor: color.hex, showSaveButton: false })
+    handleBgColorChange = color => this.setState({ backgroundColor: color.hex, disableSaveButton: false })
 
     render() {
-        const { _id, title, content, backgroundColor, showSaveButton } = this.state
+        const { _id, title, content, backgroundColor, disableSaveButton } = this.state
         const noteStyle = this.props.screenWidth > 425 ? desktopStyle : mobileStyle
         return (
             <div 
@@ -92,16 +92,17 @@ class Note extends Component {
                     <CirclePicker
                                 className="mx-auto"
                                 color={ backgroundColor }
-                                onChangeComplete={ this.handleChangeComplete }
+                                onChangeComplete={ this.handleBgColorChange }
                                 width="252px"
                             />
                     </FormGroup>
                     <FormGroup className="text-center" >
                         <Input 
-                            className="btn btn-primary w-25" 
-                            disabled={showSaveButton} 
+                            className={`btn btn-${disableSaveButton ? 'success' : 'primary'}`} 
+                            disabled={disableSaveButton} 
                             type="submit" 
-                            value="Save"
+                            value={ disableSaveButton ? 'Synched' : 'Save'}
+                            style={{ width: '100px' }}
                         />
                         {' '}
                         <Button  className="btn btn-danger w-25" onClick={this.handleDelete} >Delete</Button>
