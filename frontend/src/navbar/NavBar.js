@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink, Collapse, Button } from 'reactstrap'
 import { withRouter } from 'react-router-dom'
 
+
 class NavigationBar extends Component {
     
     state = {
-        collapsed: false
+        collapsed: false,
     }
       
     toggleNavbar = async () => this.setState({ collapsed: !this.state.collapsed })
