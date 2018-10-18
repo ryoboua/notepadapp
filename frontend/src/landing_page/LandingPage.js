@@ -3,7 +3,7 @@ import { Container, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 //images
-import images from './images/images'
+import images from '../images/images'
 
 export default class LandingPage extends Component {
     render() {
