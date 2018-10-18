@@ -10,6 +10,7 @@ export default class AccUpdatePage extends Component {
         password: '',
         newPassword_1: '',
         newPassword_2: '',
+        disableSaveButton: true,
     }
 
     componentDidMount() {
@@ -29,12 +30,19 @@ export default class AccUpdatePage extends Component {
             newPassword_1:  newPassword_1.length >= 8 ? newPassword_1 : undefined,
             newPassword_2:  newPassword_2.length >= 8 ? newPassword_2 : undefined,
         })
+        this.setState({
+            disableSaveButton: true, 
+            password: '',
+            newPassword_1: '',
+            newPassword_2: '',
+        })
     }
     handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({[e.target.name]: e.target.value})
+        if ( e.target.name === 'password') this.setState({ disableSaveButton: false })
     }
     render() {
-        const { name, email, password, newPassword_1, newPassword_2 } = this.state
+        const { name, email, password, newPassword_1, newPassword_2, disableSaveButton } = this.state
         return (
             <div className="dark_template text-center pt-5">
                 <div 
@@ -112,7 +120,12 @@ export default class AccUpdatePage extends Component {
                             <Popper target="password" />
                         </FormGroup>
                         <FormGroup className="text-center" >
-                            <Input className="btn btn-danger w-50" type="submit" value="Update"/>
+                            <Input 
+                                className={`btn w-50 btn-${disableSaveButton ? 'success' : 'danger'}`} 
+                                disabled={disableSaveButton} 
+                                type="submit" 
+                                value={ disableSaveButton ? 'Synched' : 'Update'}
+                                />
                         </FormGroup>
                     </Form>
                 </div>
