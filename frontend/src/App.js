@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import {Router, Route, Redirect } from 'react-router-dom';
 import { AppProvider } from './AppContext'
 
 import NavBar from './navbar/NavBar'
@@ -10,6 +11,8 @@ import LoginPage from './login_page/LoginPage'
 import AccUpdatePage from './account_update_page/AccUpdatePage' 
 import NotePad from './note_app/NotePad'
 import client from './client'
+
+const history = createBrowserHistory()
 
 class App extends Component {
 
@@ -26,7 +29,8 @@ class App extends Component {
     //that means the user has already logged in
     //fetch user
     if (localStorage.npaJWT) client.getUser().then(this.handleAPIResponse.forUserData)
-
+    //change url to / in order to render app
+    history.push('/')
     //Screen width
     this.updateWindowWidth()
     window.addEventListener('resize', this.updateWindowWidth);
@@ -70,6 +74,7 @@ class App extends Component {
       } 
       else {
         alert('Something went wrong ' + response)
+        localStorage.clear()
       }
     },
     forNotes: response => {
@@ -97,7 +102,7 @@ class App extends Component {
     return (
       <AppProvider clientError={ clientError } clearClientError={this.clearClientError} screenWidth={screenWidth} >
         <div className="text-center">
-          <Router>
+          <Router history={history} >
             <React.Fragment>
               <NavBar 
               showLogOut={this.state.user ? true : false} 
