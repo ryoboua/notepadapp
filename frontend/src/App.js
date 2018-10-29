@@ -73,8 +73,9 @@ class App extends Component {
         this.setState({ user: response.user, clientError: null, clientSuccess: true })
       } 
       else {
-        alert('Something went wrong ' + response)
         localStorage.clear()
+        console.log(response)
+        alert('Enable to reach backend')
       }
     },
     forNotes: response => {
@@ -85,8 +86,10 @@ class App extends Component {
         this.setState({ user: {...this.state.user, notes: response.notes }, clientError: null, clientSuccess: true })
       } 
       else {
-        alert('Something went wrong ' + response)
+        localStorage.clear()
         console.log(response)
+        alert('Enable to reach backend')
+
       }
     },
   }
