@@ -74,7 +74,7 @@ UserSchema.pre('save', function hashPassword(next) {
     if (!user.isModified('password')) next()
 
     bcrypt.hash(this.password, saltRounds, function(err, hash) {
-        if(err) console.log('Unable to has password', err)
+        if(err) console.log('Unable to hash password', err)
         user.password = hash
         next()
       })
