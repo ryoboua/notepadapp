@@ -31,17 +31,17 @@ function createUser(req, res, next) {
     })
 }
 
-function createDemoUser(req, res, next) {
+function createDemoUser(req, res, next, offset = 0) {
     const { name } = req.body
     User.countDocuments({ email: { $regex: /@whoisreggie.ca$/ }}, function(err, count){
         const user = new User({
             name,
-            email: `demo${count + 1}@whoisreggie.ca`,
+            email: `demo${count + offset + 1}@whoisreggie.ca`,
             password: demoUserPassword,
         })
         user.save(function(err, result){
             if (err) {
-                sendAPIError(err, 500, next)
+                createDemoUser(req, res, next, offset + 1)
             } 
             else {
                 //remove password from user payload
