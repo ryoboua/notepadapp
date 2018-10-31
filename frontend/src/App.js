@@ -10,6 +10,7 @@ import RegistrationPage from './registration_page/RegisterPage'
 import LoginPage from './login_page/LoginPage'
 import AccUpdatePage from './account_update_page/AccUpdatePage' 
 import NotePad from './note_app/NotePad'
+import DemoUserCard from './DemoUserCard'
 import client from './client'
 
 const history = createBrowserHistory()
@@ -22,6 +23,7 @@ class App extends Component {
     clientSuccess: null,
     showForm: false,
     screenWidth: null,
+    isDemoUser: false,
   }
 
   componentDidMount(){
@@ -38,6 +40,10 @@ class App extends Component {
   }
 
   register = userCreds => client.register(userCreds).then(this.handleAPIResponse.forUserData)
+
+  createDemoUser = name => client.createDemoUser(name).then(this.handleAPIResponse.forUserData)
+
+  setIsDemoUserToFalse = () => this.setState({ isDemoUser: false })
   
   login = userCreds => client.login(userCreds).then(this.handleAPIResponse.forUserData)
 
@@ -70,12 +76,17 @@ class App extends Component {
       } 
       else if (response.user && response.JWT) {
         localStorage.npaJWT = response.JWT
-        this.setState({ user: response.user, clientError: null, clientSuccess: true })
+        this.setState({ 
+          user: response.user,
+          clientError: null,
+          clientSuccess: true,
+          isDemoUser: response.isDemoUser ? true : false 
+        })
       } 
       else {
         localStorage.clear()
         console.log(response)
-        alert('Enable to reach backend')
+        alert('Enable to reach backend. It\'s possible your JWT expire. Re-authenticate yourself by logging in.')
       }
     },
     forNotes: response => {
@@ -88,8 +99,7 @@ class App extends Component {
       else {
         localStorage.clear()
         console.log(response)
-        alert('Enable to reach backend')
-
+        alert('Enable to reach backend. It\'s possible your JWT expire. Re-authenticate yourself by logging in.')
       }
     },
   }
@@ -101,7 +111,7 @@ class App extends Component {
   updateWindowWidth = () => this.setState({ screenWidth: window.innerWidth })
 
   render() {
-    const { user, clientError, showForm, screenWidth } = this.state
+    const { user, clientError, showForm, screenWidth, isDemoUser } = this.state
     return (
       <AppProvider clientError={ clientError } clearClientError={this.clearClientError} screenWidth={screenWidth} >
         <div className="text-center">
@@ -120,9 +130,15 @@ class App extends Component {
                 createNote={this.createNote}
                 screenWidth={screenWidth}  
               />
+              <DemoUserCard 
+                isDemoUser={isDemoUser} 
+                setIsDemoUserToFalse={this.setIsDemoUserToFalse}
+                name={user && user.name}
+                email={user && user.email} 
+                />
               <Route exact path='/' render={() => !user ? <LandingPage /> : <Redirect to='/notes'/>} />
-              <Route path='/registration' 
-                render={() => !user ? <RegistrationPage register={this.register} screenWidth={screenWidth} /> : <Redirect to='/notes'/>} />
+              <Route path='/:notepadapp/:registration' 
+                render={() => !user ? <RegistrationPage register={this.register} createDemoUser={this.createDemoUser} screenWidth={screenWidth} /> : <Redirect to='/notes'/>} />
               <Route path='/auth/login' 
                 render={() => !user ? <LoginPage login={this.login} screenWidth={screenWidth} /> : <Redirect to='/notes'/>} />
               <Route 
@@ -136,7 +152,9 @@ class App extends Component {
                                   createNote={this.createNote} 
                                   updateNote={this.updateNote} 
                                   deleteNote={this.deleteNote}
-                                  screenWidth={screenWidth} 
+                                  screenWidth={screenWidth}
+                                  isDemoUser={isDemoUser}
+                                  setIsDemoUserToFalse={this.setIsDemoUserToFalse} 
                                 /> 
                                 : 
                                 <Redirect to='/'/>
