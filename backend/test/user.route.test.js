@@ -102,26 +102,26 @@ describe('# POST test for updating user account including password', () => {
                     return done()
                 })
     })
-    it('# POST test for updating user account NOT including password', done => {
-        const expectedUser = {
-            name: 'Richard',
-            email: 'test@yahoo.com',
-            password: '123456789',
-        }
-        return request(`${baseUrl}/users/${loggedInUser.user._id}`)
-                .post('')
-                .set('authorization', `Bearer ${loggedInUser.JWT}`)
-                .send(expectedUser)
-                .expect(200)
-                .then(res => {
-                    expect(res.body).to.have.property('user')
-                    expect(res.body).to.have.property('JWT')
-                    const { user ,JWT} = res.body
-                    expect(user._id).to.equal(loggedInUser.user._id)
-                    testHelpers.validUserDataAndJWT(user, expectedUser, JWT)
-                    return done()
-                })
-        })
+    // it('# POST test for updating user account NOT including password', done => {
+    //     const expectedUser = {
+    //         name: 'Richard',
+    //         email: 'test@yahoo.com',
+    //         password: '123456789',
+    //     }
+    //     return request(`${baseUrl}/users/${loggedInUser.user._id}`)
+    //             .post('')
+    //             .set('authorization', `Bearer ${loggedInUser.JWT}`)
+    //             .send(expectedUser)
+    //             .expect(200)
+    //             .then(res => {
+    //                 expect(res.body).to.have.property('user')
+    //                 expect(res.body).to.have.property('JWT')
+    //                 const { user ,JWT} = res.body
+    //                 expect(user._id).to.equal(loggedInUser.user._id)
+    //                 testHelpers.validUserDataAndJWT(user, expectedUser, JWT)
+    //                 return done()
+    //             })
+    //     })
     
         it('# POST - Should return validation error when updating account with newPassword_1 & newPassword_2 NOT matching', done => {
             const expectedUser = {
@@ -143,7 +143,7 @@ describe('# POST test for updating user account including password', () => {
                     })
         })
 
-        it('# POST - Should return validation error when posting with newPassword_2 and not newPassword_1 in body', done => {
+        it('# POST - Should return validation error when posting with newPassword_2 and no newPassword_1 in body', done => {
             const expectedUser = {
                 name: 'Richard',
                 email: 'test@yahoo.com',
