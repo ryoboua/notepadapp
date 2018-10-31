@@ -20,9 +20,12 @@ const envVarsSchema = Joi.object({
   MONGO_HOST: Joi.string().required()
     .description('Mongo DB host url'),
   MONGO_PORT: Joi.number()
-    .default(27017)
+    .default(27017),
+    PRIVATE_KEY: Joi.string().required(),
+    CERT_CERT: Joi.string().required(),
+    DEMO_USER_PASSWORD: Joi.string().required(),
 }).unknown()
-  .required();
+  .required()
 
 const { error, value: envVars } = Joi.validate(process.env, envVarsSchema);
 if (error) {
@@ -37,7 +40,11 @@ const config = {
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT
-  }
+  },
+  privateKey: envVars.PRIVATE_KEY,
+  certificate: envVars.CERT_CERT,
+  demoUserPassword : envVars.DEMO_USER_PASSWORD,
+
 }
 
 module.exports = config
