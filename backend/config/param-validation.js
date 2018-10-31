@@ -4,8 +4,15 @@ import Joi from 'joi';
 const createUser = {
     body: {
         name: Joi.string().required(),
-        email: Joi.string().email().required(),
+        email: Joi.string().email().regex(/@whoisreggie.ca$/, { invert: true }).required(),
         password: Joi.string().required(),
+    }
+}
+
+//POST /register/demouser
+const createDemoUser = {
+    body: {
+        name: Joi.string().required(),
     }
 }
 //POST /userId
@@ -43,4 +50,4 @@ const updateNote = {
     }
 }
 
-module.exports = { createUser, login, updateUser, createNote, updateNote }
+module.exports = { createUser, createDemoUser, login, updateUser, createNote, updateNote }
