@@ -1,6 +1,8 @@
 import User from '../models/user.model'
+import { demoUserPassword } from '../config/config'
 import { shouldPasswordBeUpdated } from '../helpers/user.helper'
 import { sendAPIError } from '../helpers/APIError'
+
 
 
 function createUser(req, res, next) {
@@ -26,6 +28,29 @@ function createUser(req, res, next) {
             req.user = result
             next()
         }
+    })
+}
+
+function createDemoUser(req, res, next) {
+    const { name } = req.body
+    User.countDocuments({ email: { $regex: /@whoisreggie.ca$/ }}, function(err, count){
+        const user = new User({
+            name,
+            email: `demo${count + 1}@whoisreggie.ca`,
+            password: demoUserPassword,
+        })
+        user.save(function(err, result){
+            if (err) {
+                sendAPIError(err, 500, next)
+            } 
+            else {
+                //remove password from user payload
+                result.password = undefined
+                req.user = result
+                req.isDemoUser = true
+                next()
+            }
+        })
     })
 }
 
@@ -78,6 +103,7 @@ function createUserResponse(req, res, next) {
         res.json({
             user: req.user,
             JWT: req.token,
+            isDemoUser: req.isDemoUser,
         })
     } else {
         next()
@@ -173,6 +199,7 @@ function deleteNote(req, res ,next) {
 }
 module.exports = { 
     createUser, 
+    createDemoUser,
     updateUser, 
     createUserResponse,
     createNote,
