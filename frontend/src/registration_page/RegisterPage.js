@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Popper from '../Popper'
-import { Form, Label, Input, FormGroup } from 'reactstrap';
+import { Form, Label, Input, FormGroup, Button } from 'reactstrap';
 
 
 export default class RegisterPage extends Component { 
@@ -13,8 +13,13 @@ export default class RegisterPage extends Component {
         e.preventDefault()
         this.props.register(this.state)
     }
-    handleChange = (e) => {
+    handleChange = e => {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    createDemoUser = e => {
+        e.preventDefault()
+        this.props.createDemoUser(this.state.name)
     }
     render() {
         return (
@@ -33,11 +38,14 @@ export default class RegisterPage extends Component {
                                 name="name" 
                                 id="name" 
                                 required 
-                                placeholder="Enter a name" 
+                                placeholder="Enter a name to create a demo user" 
                                 onChange={this.handleChange} 
                             />
                             <Popper target="name" />
                         </FormGroup>
+                        <div className="text-center" >
+                            <Button className="w-50" disabled={this.state.name.length === 0 ? true : false }  color="primary" onClick={this.createDemoUser} >Create Demo User</Button>
+                        </div>
                         <FormGroup>
                             <Label for="email">Email</Label>
                             <Input 
