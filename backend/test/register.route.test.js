@@ -144,6 +144,37 @@ describe('# POST /register/demouser', () => {
             })
     })
 
+    it('Should return demo6@whoisreggie.ca', done => {
+        const demoUser4 = new User({
+            name: 'dave',
+            email: 'demo4@whoisreggie.ca',
+            password: '12345678'
+        })
+        return demoUser4.save(function(err, result){
+            if (err) throw err
+            const demoUser5 = new User({
+                name: 'dave',
+                email: 'demo5@whoisreggie.ca',
+                password: '12345678'
+            })
+            demoUser5.save(function(err, result){
+                if (err) throw err
+                return registerDemoUser
+                .post('')
+                .send({ name: expectedName })
+                .expect(200)
+                .then( res => {
+                    expect(res.body).to.have.property('user');
+                    expect(res.body).to.have.property('JWT');
+                    expect(res.body).to.have.property('isDemoUser', true)
+                    const { user, JWT } = res.body
+                    testHelpers.validUserDataAndJWT(user, { name: expectedName, email: 'demo6@whoisreggie.ca', password: config.demoUserPassword }, JWT)
+                    done()
+                })
+            })
+        })
+    })
+
     it('Posting with empty string as name should return 400', done => {
         return registerDemoUser
             .post('')
