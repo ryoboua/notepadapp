@@ -9,6 +9,7 @@ const mongoURI = config.mongo.host
 const port = config.port
 
 const register = request(`http://localhost:${port}/register`)
+const registerDemoUser = request(`http://localhost:${port}/register/demouser`)
 
 beforeAll(async done => {
     await mongoose.connect(mongoURI, { useNewUrlParser: true })
@@ -76,5 +77,81 @@ describe('# POST /register', () => {
             .then(res => {
                 done()
             })
+    })
+    it('Should return 400 when trying to create a user with email domain @whoisreggie.ca', done => {
+        return register
+            .post('')
+            .send({
+                name: 'Reggie',
+                email: 'test@whoisreggie.ca',
+                password: 'test12345678'
+            })
+            .expect(400)
+            .then(res => {
+                expect(res.body).to.have.property('message', 'validation error')
+                expect(res.body).to.have.property('status', 400)
+                done()
+            })
+    })
+})
+
+describe('# POST /register/demouser', () => {
+    const expectedName = 'Reggie'
+    it('Should return demo1@whoisreggie.ca', done => {
+        return registerDemoUser
+            .post('')
+            .send({ name: expectedName })
+            .expect(200)
+            .then( res => {
+                expect(res.body).to.have.property('user');
+                expect(res.body).to.have.property('JWT');
+                expect(res.body).to.have.property('isDemoUser', true)
+                const { user, JWT } = res.body
+                testHelpers.validUserDataAndJWT(user, { name: expectedName, email: 'demo1@whoisreggie.ca', password: config.demoUserPassword }, JWT)
+                done()
+            })
+
+    })
+
+    it('Should return demo2@whoisreggie.ca', done => {
+        return registerDemoUser
+            .post('')
+            .send({ name: expectedName })
+            .expect(200)
+            .then( res => {
+                expect(res.body).to.have.property('user');
+                expect(res.body).to.have.property('JWT');
+                expect(res.body).to.have.property('isDemoUser', true)
+                const { user, JWT } = res.body
+                testHelpers.validUserDataAndJWT(user, { name: expectedName, email: 'demo2@whoisreggie.ca', password: config.demoUserPassword }, JWT)
+                done()
+            })
+
+    })
+
+    it('Should return demo3@whoisreggie.ca', done => {
+        return registerDemoUser
+            .post('')
+            .send({ name: expectedName })
+            .expect(200)
+            .then( res => {
+                expect(res.body).to.have.property('user');
+                expect(res.body).to.have.property('JWT');
+                expect(res.body).to.have.property('isDemoUser', true)
+                const { user, JWT } = res.body
+                testHelpers.validUserDataAndJWT(user, { name: expectedName, email: 'demo3@whoisreggie.ca', password: config.demoUserPassword }, JWT)
+                done()
+            })
+    })
+
+    it('Posting with empty string as name should return 400', done => {
+        return registerDemoUser
+            .post('')
+            .send({ name: '' })
+            .expect(400)
+            .then( res => {
+               done()
+            })
+
     })
 })
