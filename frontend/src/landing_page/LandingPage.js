@@ -12,13 +12,13 @@ export default class LandingPage extends Component {
                 <img src={`${images.noteImage.url}`} alt={images.noteImage.altText} height="235" width="225" />
                 <h2 className="text-white">Leave yourself a note on the web.</h2>
                 <Container style={{ marginTop: '1.6%' }} >
-                    <Link to='/registration' >
+                    <Link to='/notepadapp/registration' >
                         <Button color="danger" size="lg" style={{ width: '110px' }} >
                             Sign Up
                         </Button>
                     </Link>
                     {' '}
-                    <Link to='auth/login' >
+                    <Link to='/notepadapp/auth/login' >
                         <Button outline color="danger" size="lg" style={{ width: '110px' }} >
                             Log in
                         </Button>

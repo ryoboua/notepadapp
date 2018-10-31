@@ -31,8 +31,8 @@ class App extends Component {
     //that means the user has already logged in
     //fetch user
     if (localStorage.npaJWT) client.getUser().then(this.handleAPIResponse.forUserData)
-    //change url to / in order to render app
-    history.push('/')
+    //change url to /notepadapp in order to render app
+    history.push('/notepadapp')
     //Screen width
     this.updateWindowWidth()
     window.addEventListener('resize', this.updateWindowWidth);
@@ -136,13 +136,13 @@ class App extends Component {
                 name={user && user.name}
                 email={user && user.email} 
                 />
-              <Route exact path='/' render={() => !user ? <LandingPage /> : <Redirect to='/notes'/>} />
-              <Route path='/:notepadapp/:registration' 
-                render={() => !user ? <RegistrationPage register={this.register} createDemoUser={this.createDemoUser} screenWidth={screenWidth} /> : <Redirect to='/notes'/>} />
-              <Route path='/auth/login' 
-                render={() => !user ? <LoginPage login={this.login} screenWidth={screenWidth} /> : <Redirect to='/notes'/>} />
+              <Route exact path='/notepadapp' render={() => !user ? <LandingPage /> : <Redirect to='/notepadapp/notes'/>} />
+              <Route path='/notepadapp/registration' 
+                render={() => !user ? <RegistrationPage register={this.register} createDemoUser={this.createDemoUser} screenWidth={screenWidth} /> : <Redirect to='/notepadapp/notes'/>} />
+              <Route path='/notepadapp/auth/login' 
+                render={() => !user ? <LoginPage login={this.login} screenWidth={screenWidth} /> : <Redirect to='/notepadapp/notes'/>} />
               <Route 
-                path='/notes' 
+                path='/notepadapp/notes' 
                 render={
                         () => user ? 
                                 <NotePad 
@@ -157,11 +157,11 @@ class App extends Component {
                                   setIsDemoUserToFalse={this.setIsDemoUserToFalse} 
                                 /> 
                                 : 
-                                <Redirect to='/'/>
+                                <Redirect to='/notepadapp'/>
                         } 
               />
               <Route 
-                path='/users/edit'
+                path='/notepadapp/users/edit'
                 render={() => user ? 
                   <AccUpdatePage 
                     updateAcc={this.updateAcc} 
@@ -171,7 +171,7 @@ class App extends Component {
                     screenWidth={screenWidth} 
                   /> 
                   : 
-                  <Redirect to='/'/>}
+                  <Redirect to='/notepadapp'/>}
               />
             </React.Fragment>
           </Router>

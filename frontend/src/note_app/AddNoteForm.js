@@ -20,7 +20,7 @@ class AddNoteForm extends Component {
             backgroundColor: '#ffffff', 
         })
         this.props.toggleShowForm()
-        this.props.history.push('/notes')
+        this.props.history.push('/notepadapp/notes')
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value })

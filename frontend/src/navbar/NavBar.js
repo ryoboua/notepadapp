@@ -10,8 +10,8 @@ class NavigationBar extends Component {
     }
       
     toggleNavbar = async () => this.setState({ collapsed: !this.state.collapsed })
-    navigateToNotes = () => this.toggleNavbar().then(this.props.history.push('/notes'))
-    navigateToAccEditPage = () => this.toggleNavbar().then(this.props.history.push('/users/edit'))
+    navigateToNotes = () => this.toggleNavbar().then(this.props.history.push('/notepadapp/notes'))
+    navigateToAccEditPage = () => this.toggleNavbar().then(this.props.history.push('/notepadapp/users/edit'))
     logout = () => this.toggleNavbar().then(this.props.logout)
     toggleShowForm = () => this.setState({ collapsed: false }, this.props.toggleShowForm)
 
