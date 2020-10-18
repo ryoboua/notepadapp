@@ -8,22 +8,22 @@
     "watch": "jest --detectOpenHandles --runInBand --watch ./test/*.*.js"
   },
   "dependencies": {
-    "app-root-path": "^2.1.0",
+    "app-root-path": "^2.2.1",
     "bcrypt": "^5.0.0",
-    "compression": "^1.7.3",
-    "cookie-parser": "~1.4.3",
-    "cors": "^2.8.4",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
-    "dotenv": "^6.0.0",
-    "express": "~4.16.0",
-    "express-validation": "^1.0.2",
-    "helmet": "^3.13.0",
-    "joi": "^13.6.0",
-    "jsonwebtoken": "^8.3.0",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-validation": "^1.0.3",
+    "helmet": "^3.23.3",
+    "joi": "^13.7.0",
+    "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
-    "mongoose": "^5.2.17",
+    "mongoose": "^5.10.9",
     "morgan": "~1.9.0",
-    "node-mocks-http": "^1.7.0"
+    "node-mocks-http": "^1.9.0"
   },
   "devDependencies": {
     "babel-jest": "^23.6.0",
@@ -31,7 +31,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "chai": "*",
-    "jest": "*",
-    "supertest": "^3.3.0"
+    "jest": "^26.5.3",
+    "supertest": "^3.4.2"
   }
 }
