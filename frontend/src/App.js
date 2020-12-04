@@ -29,7 +29,7 @@ class App extends Component {
   componentDidMount() {
     if (localStorage.npaJWT) client.getUser().then(this.handleAPIResponse.forUserData)
     history.push('/')
-    //Screen width
+
     this.updateWindowWidth()
     window.addEventListener('resize', this.updateWindowWidth);
 

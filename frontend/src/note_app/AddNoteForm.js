@@ -13,7 +13,6 @@ class AddNoteForm extends Component {
     handleSubmit = e => {
         e.preventDefault()
         this.props.createNote(this.state)
-        //TODO should check to see if not was succesfully created before moving on
         this.setState({
             title: '',
             content: '',
