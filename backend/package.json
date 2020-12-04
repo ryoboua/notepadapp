@@ -21,7 +21,7 @@
     "joi": "^13.7.0",
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
-    "mongoose": "^5.10.9",
+    "mongoose": "5.10.9",
     "morgan": "~1.9.0",
     "node-mocks-http": "^1.9.0"
   },
