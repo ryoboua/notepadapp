@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { CirclePicker } from 'react-color'
 
 class AddNoteForm extends Component {
-    state = { 
+    state = {
         title: '',
         content: '',
         backgroundColor: '#ffffff',
@@ -14,65 +14,65 @@ class AddNoteForm extends Component {
         e.preventDefault()
         this.props.createNote(this.state)
         //TODO should check to see if not was succesfully created before moving on
-        this.setState({ 
+        this.setState({
             title: '',
             content: '',
-            backgroundColor: '#ffffff', 
+            backgroundColor: '#ffffff',
         })
         this.props.toggleShowForm()
-        this.props.history.push('/notepadapp/notes')
+        this.props.history.push('/notes')
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value })
 
     handleChangeComplete = color => this.setState({ backgroundColor: color.hex })
-      
+
 
     render() {
-        const {  backgroundColor } = this.state
+        const { backgroundColor } = this.state
         return (
             <Modal style={{ backgroundColor }} isOpen={this.props.showForm}>
                 <ModalHeader style={{ backgroundColor }} >Create a note.</ModalHeader>
                 <ModalBody style={{ backgroundColor }} >
                     <Form onSubmit={this.handleSubmit} className="w-100 text-left" >
-                    <FormGroup>
+                        <FormGroup>
                             <Label for="name">Title</Label>
-                            <Input 
-                                type="text" 
-                                name="title" 
-                                id="title" 
-                                required 
-                                onChange={this.handleChange} 
-                                style={{ 
+                            <Input
+                                type="text"
+                                name="title"
+                                id="title"
+                                required
+                                onChange={this.handleChange}
+                                style={{
                                     backgroundColor,
-                                    color: 'black', 
-                                }} 
+                                    color: 'black',
+                                }}
                             />
                         </FormGroup>
                         <FormGroup>
                             <Label for="email">Content</Label>
-                            <Input 
-                                type="textarea" 
-                                name="content" 
-                                id="content" 
-                                required 
-                                onChange={this.handleChange} 
-                                style={{ 
+                            <Input
+                                type="textarea"
+                                name="content"
+                                id="content"
+                                required
+                                onChange={this.handleChange}
+                                style={{
                                     backgroundColor,
-                                    color: 'black', 
-                                }} 
+                                    color: 'black',
+                                }}
                             />
                         </FormGroup>
                         <FormGroup>
                             <CirclePicker
                                 className="mx-auto"
-                                color={ backgroundColor }
-                                onChangeComplete={ this.handleChangeComplete }
+                                color={backgroundColor}
+                                onChangeComplete={this.handleChangeComplete}
                                 width={this.props.screenWidth > 425 ? '378px' : '252px'}
                             />
                         </FormGroup>
                         <FormGroup className="text-center" >
-                            <Input className="btn btn-danger w-25" type="submit" value="Save"/>
+                            <Input className="btn btn-danger w-25" type="submit" value="Save" />
                         </FormGroup>
                     </Form>
                 </ModalBody>
@@ -82,7 +82,7 @@ class AddNoteForm extends Component {
             </Modal>
         )
     }
-  }
+}
 
 
 
