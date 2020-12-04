@@ -9,7 +9,7 @@ const port = config.port
 const privateKeyURL = config.privateKey
 const certificateURL = config.certificate
 
-mongoose.connect(mongoURI, { useNewUrlParser: true });
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.once('open', () => console.log('Connected to Mongo DB'))
 
@@ -23,6 +23,6 @@ mongoose.connection.on('error', () => { throw new Error(`unable to connect to da
 //     cert: certificate
 // }, app).listen(port, () =>  console.log('Server is up! port: ' + port))
 
-app.listen(port, () =>  console.log('Server is up! port: ' + port))
+app.listen(port, () => console.log('Server is up! port: ' + port))
 
 module.exports = app
