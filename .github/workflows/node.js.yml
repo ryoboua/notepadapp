@@ -19,3 +19,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
+      #Frontend
+      - run: cd frontend && npm i && npm run build
+      - run: rm -rf /var/www/notepadapp/build
+      - run: cd frontend && mv build /var/www/notepadapp/build
