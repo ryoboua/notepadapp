@@ -20,9 +20,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      #Backend
+      - run: cp ../.env backend/.env
+      - run: cd backend && npm i
+      - run: pm2 start backend/start-server.js --name=notepadapp-backend
+      #- run: pm2 restart notepadapp-backend
+
       #Frontend
       # - run: cd frontend && npm i && npm run build
       # - run: rm -rf /var/www/notepadapp/build
       # - run: cd frontend && mv build /var/www/notepadapp/build
-
-      - run: cp ../.env ./backend/.env
