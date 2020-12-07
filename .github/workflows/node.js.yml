@@ -23,7 +23,7 @@ jobs:
       #Backend
       - run: cp ../.env backend/.env
       - run: cd backend && npm i
-      - run: pm2 start backend/start-server.js --name=notepadapp-backend
+      - run: cd backend && pm2 start start-server.js --name=notepadapp-backend
       #- run: pm2 restart notepadapp-backend
 
       #Frontend
