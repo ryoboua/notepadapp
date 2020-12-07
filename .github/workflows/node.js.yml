@@ -27,6 +27,6 @@ jobs:
       - run: pm2 restart notepadapp-backend
 
       #Frontend
-      # - run: cd frontend && npm i && npm run build
-      # - run: rm -rf /var/www/notepadapp/build
-      # - run: cd frontend && mv build /var/www/notepadapp/build
+      - run: cd frontend && npm i && npm run build
+      - run: rm -rf /var/www/notepadapp/build
+      - run: cd frontend && mv build /var/www/notepadapp/build
