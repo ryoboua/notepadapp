@@ -25,4 +25,4 @@ jobs:
       # - run: rm -rf /var/www/notepadapp/build
       # - run: cd frontend && mv build /var/www/notepadapp/build
 
-      - run: cat ../.env
+      - run: cp ../.env ./backend/.env
