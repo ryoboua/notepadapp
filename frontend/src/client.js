@@ -1,7 +1,7 @@
 let API_URL = 'http://localhost:3030'
 
 if (process.env.NODE_ENV === "production") {
-    API_URL = 'http://notepadapp.whoisreggie.ca/api'
+    API_URL = 'https://notepadapp.whoisreggie.ca/api'
 }
 
 const register = async userCreds => {
