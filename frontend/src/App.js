@@ -67,6 +67,10 @@ class App extends Component {
 
   handleAPIResponse = {
     forUserData: response => {
+      if (!response) {
+        localStorage.clear()
+        return
+      }
       if (response.status) {
         this.setState({ clientError: response })
       }
